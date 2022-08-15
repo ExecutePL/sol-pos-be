@@ -29,6 +29,7 @@ type User {
     email: String!
     email_verified_at: DateTime
     wallet_address: String
+    password: String!
     created_at: DateTime!
     updated_at: DateTime!
     products: [Product!] @hasMany
