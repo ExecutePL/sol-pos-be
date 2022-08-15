@@ -1,0 +1,36 @@
+extend input CreateWorkerInput {
+    name: String!
+    remember_token: String
+    user: BelongsToUser!
+}
+
+extend input UpdateWorkerInput {
+    name: String
+    remember_token: String
+}
+
+extend input BelongsToWorker {
+    connect: ID
+    create: CreateWorkerInput
+    update: UpdateWorkerInput
+}
+
+extend input BelongsToManyWorkers {
+    connect: [ID!]
+    create: [CreateWorkerInput!]
+    delete: [ID!]
+}
+
+extend input HasOneWorker {
+    connect: ID
+    create: CreateWorkerInput
+    update: UpdateWorkerInput
+    delete: ID
+}
+
+extend input HasManyWorkers {
+    connect: [ID!]
+    update: [UpdateWorkerInput!]
+    create: [CreateWorkerInput!]
+    delete: [ID!]
+}

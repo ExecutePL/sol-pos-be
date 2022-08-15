@@ -1,0 +1,38 @@
+extend input CreatePointOfSaleInput {
+    name: String!
+    status: Int
+    user: BelongsToUser!
+    bills: HasManyBills
+}
+
+extend input UpdatePointOfSaleInput {
+    name: String
+    status: Int
+    bills: HasManyBills
+}
+
+extend input BelongsToPointOfSale {
+    connect: ID
+    create: CreatePointOfSaleInput
+    update: UpdatePointOfSaleInput
+}
+
+extend input BelongsToManyPointsOfSale {
+    connect: [ID!]
+    create: [CreatePointOfSaleInput!]
+    delete: [ID!]
+}
+
+extend input HasOnePointOfSale {
+    connect: ID
+    create: CreatePointOfSaleInput
+    update: UpdatePointOfSaleInput
+    delete: ID
+}
+
+extend input HasManyPointsOfSale {
+    connect: [ID!]
+    update: [UpdatePointOfSaleInput!]
+    create: [CreatePointOfSaleInput!]
+    delete: [ID!]
+}

@@ -1,0 +1,36 @@
+extend input CreateOrderedProductInput {
+    bill: BelongsToBill!
+    product: BelongsToProduct!
+}
+
+extend input UpdateOrderedProductInput {
+    status: Int
+    bill: BelongsToBill
+    product: BelongsToProduct
+}
+
+extend input BelongsToOrderedProduct {
+    connect: ID
+    create: CreateOrderedProductInput
+    update: UpdateOrderedProductInput
+}
+
+extend input BelongsToManyOrderedProducts {
+    connect: [ID!]
+    create: [CreateOrderedProductInput!]
+    delete: [ID!]
+}
+
+extend input HasOneOrderedProduct {
+    connect: ID
+    create: CreateOrderedProductInput
+    update: UpdateOrderedProductInput
+    delete: ID
+}
+
+extend input HasManyOrderedProducts {
+    connect: [ID!]
+    update: [UpdateOrderedProductInput!]
+    create: [CreateOrderedProductInput!]
+    delete: [ID!]
+}

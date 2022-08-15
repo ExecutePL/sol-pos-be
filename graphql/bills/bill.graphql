@@ -1,0 +1,34 @@
+extend type Query {
+    bills: [Bill!]! @paginate
+    bill(id: ID! @eq): Bill @find
+}
+
+extend type Mutation {
+    createBill(input: CreateBillInput! @spread): Bill! @create
+    updateBill(id: ID!, input: UpdateBillInput! @spread): Bill! @update
+    deleteBill(id: ID!): Bill! @delete
+}
+
+input CreateBillInput
+input UpdateBillInput
+input BelongsToBill
+input BelongsToManyBills
+input HasOneBill
+input HasManyBills
+
+type Bill {
+    id: ID!
+    status: Int
+    sum: Float
+    tip: Int
+    total: Float
+    created_at: DateTime!
+    updated_at: DateTime!
+    products: [Product!] @hasMany
+    orderedProducts: [OrderedProduct!] @hasMany
+    user: User! @belongsTo
+    worker: Worker! @belongsTo
+    pointOfSale: PointOfSale! @belongsTo
+}
+
+#import bill.input.graphql

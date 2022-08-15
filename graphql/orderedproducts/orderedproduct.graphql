@@ -1,0 +1,28 @@
+extend type Query {
+    orderedProducts: [OrderedProduct!]! @paginate
+    orderedProduct(id: ID! @eq): OrderedProduct @find
+}
+
+extend type Mutation {
+    createOrderedProduct(input: CreateOrderedProductInput! @spread): OrderedProduct!
+    updateOrderedProduct(id: ID!, input: UpdateOrderedProductInput! @spread): OrderedProduct! @update
+    deleteOrderedProduct(id: ID!): OrderedProduct!
+}
+
+input CreateOrderedProductInput
+input UpdateOrderedProductInput
+input BelongsToOrderedProduct
+input BelongsToManyOrderedProducts
+input HasOneOrderedProduct
+input HasManyOrderedProducts
+
+type OrderedProduct {
+    id: ID!
+    status: Int
+    created_at: DateTime!
+    updated_at: DateTime!
+    bill: Bill! @belongsTo
+    product: Product! @belongsTo
+}
+
+#import orderedproduct.input.graphql

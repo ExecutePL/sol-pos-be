@@ -1,0 +1,44 @@
+extend input CreateBillInput {
+    status: Int
+    sum: Float
+    tip: Int
+    total: Float
+    products: HasManyProducts
+    user: BelongsToUser!
+    worker: BelongsToWorker!
+    pointOfSale: BelongsToPointOfSale!
+}
+
+extend input UpdateBillInput {
+    status: Int
+    sum: Float
+    tip: Int
+    total: Float
+    products: HasManyProducts
+}
+
+extend input BelongsToBill {
+    connect: ID
+    create: CreateBillInput
+    update: UpdateBillInput
+}
+
+extend input BelongsToManyBills {
+    connect: [ID!]
+    create: [CreateBillInput!]
+    delete: [ID!]
+}
+
+extend input HasOneBill {
+    connect: ID
+    create: CreateBillInput
+    update: UpdateBillInput
+    delete: ID
+}
+
+extend input HasManyBills {
+    connect: [ID!]
+    update: [UpdateBillInput!]
+    create: [CreateBillInput!]
+    delete: [ID!]
+}

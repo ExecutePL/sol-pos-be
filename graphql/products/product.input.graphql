@@ -1,0 +1,40 @@
+extend input CreateProductInput {
+    name: String!
+    description: String
+    active: Boolean
+    featured: Boolean
+    price: String
+    sort_order: Int
+    user: BelongsToUser!
+}
+
+extend input UpdateProductInput {
+    name: String
+    description: String
+    active: Boolean
+    featured: Boolean
+    price: String
+    sort_order: Int
+}
+
+extend input BelongsToProduct {
+    connect: ID
+}
+
+extend input BelongsToManyProducts {
+    connect: [ID!]
+}
+
+extend input HasOneProduct {
+    connect: ID
+    create: CreateProductInput
+    update: UpdateProductInput
+    delete: ID
+}
+
+extend input HasManyProducts {
+    connect: [ID!]
+    update: [UpdateProductInput!]
+    create: [CreateProductInput!]
+    delete: [ID!]
+}

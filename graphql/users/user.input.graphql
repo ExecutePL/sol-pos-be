@@ -1,0 +1,38 @@
+extend input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+extend input UpdateUserInput {
+    name: String
+    email: String
+    email_verified_at: DateTime
+    password: String
+}
+
+extend input BelongsToUser {
+    connect: ID
+    create: CreateUserInput
+    update: UpdateUserInput
+}
+
+extend input BelongsToManyUsers {
+    connect: [ID!]
+    create: [CreateUserInput!]
+    delete: [ID!]
+}
+
+extend input HasOneUser {
+    connect: ID
+    create: CreateUserInput
+    update: UpdateUserInput
+    delete: ID
+}
+
+extend input HasManyUsers {
+    connect: [ID!]
+    update: [UpdateUserInput!]
+    create: [CreateUserInput!]
+    delete: [ID!]
+}

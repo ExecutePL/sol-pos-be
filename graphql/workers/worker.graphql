@@ -1,0 +1,28 @@
+extend type Query {
+    workers: [Worker!]! @paginate
+    worker(id: ID! @eq): Worker @find
+}
+
+extend type Mutation {
+    createWorker(input: CreateWorkerInput! @spread): Worker! @create
+    updateWorker(id: ID!, input: UpdateWorkerInput! @spread): Worker! @update
+    deleteWorker(id: ID!): Worker! @delete
+}
+
+input CreateWorkerInput
+input UpdateWorkerInput
+input BelongsToWorker
+input BelongsToManyWorkers
+input HasOneWorker
+input HasManyWorkers
+
+type Worker {
+    id: ID!
+    name: String!
+    remember_token: String
+    created_at: DateTime!
+    updated_at: DateTime!
+    user: User! @belongsTo
+}
+
+#import worker.input.graphql

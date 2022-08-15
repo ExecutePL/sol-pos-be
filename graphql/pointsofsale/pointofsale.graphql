@@ -1,0 +1,29 @@
+extend type Query {
+    pointsOfSale: [PointOfSale!]! @paginate
+    pointOfSale(id: ID! @eq): PointOfSale @find
+}
+
+extend type Mutation {
+    createPointOfSale(input: CreatePointOfSaleInput! @spread): PointOfSale! @create
+    updatePointOfSale(id: ID!, input: UpdatePointOfSaleInput! @spread): PointOfSale! @update
+    deletePointOfSale(id: ID!): PointOfSale! @delete
+}
+
+input CreatePointOfSaleInput
+input UpdatePointOfSaleInput
+input BelongsToPointOfSale
+input BelongsToManyPointsOfSale
+input HasOnePointOfSale
+input HasManyPointsOfSale
+
+type PointOfSale {
+    id: ID!
+    name: String!
+    status: Int
+    created_at: DateTime!
+    updated_at: DateTime!
+    user: User! @belongsTo
+    bills: Bill! @hasMany
+}
+
+#import pointofsale.input.graphql
