@@ -7,7 +7,7 @@ extend type Mutation {
     createBill(input: CreateBillInput! @spread): Bill! @create
     updateBill(id: ID!, input: UpdateBillInput! @spread): Bill! @update
     deleteBill(id: ID!): Bill! @delete
-    checkOrCreateBill(pos_id: ID!, user_id: ID!, worker_id: ID!): Bill!
+    checkOrCreateBill(pos_id: ID!): Bill!
 }
 
 input CreateBillInput
