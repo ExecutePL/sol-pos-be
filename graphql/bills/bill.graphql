@@ -18,7 +18,7 @@ input HasOneBill
 input HasManyBills
 
 type Bill {
-    id: ID!
+    id: ID
     status: Int
     sum: Float
     tip: Int
