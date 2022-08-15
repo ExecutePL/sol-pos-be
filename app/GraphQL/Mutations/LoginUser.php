@@ -3,6 +3,8 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
+use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -11,21 +13,24 @@ final class LoginUser
     /**
      * @param null $_
      * @param array{} $args
+     * @return User
+     * @throws Error
      */
-    public function __invoke($_, array $args)
+    public function __invoke($_, array $args): User
     {
-        /**
-         * @param null $_
-         * @param array<string, mixed> $args
-         */
-        $user = User::where('email', $args['email'])->first();
+        $guard = Auth::guard();
 
-        if (!$user || !Hash::check($args['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                                                        'email' => ['The provided credentials are incorrect.'],
-                                                    ]);
+        if( ! $guard->attempt($args)) {
+            throw new Error('Invalid credentials.');
         }
 
-        return $user->createToken($user->name)->plainTextToken;
+        /**
+         * Since we successfully logged in, this can no longer be `null`.
+         *
+         * @var \App\Models\User $user
+         */
+        $user = $guard->user();
+
+        return $user;
     }
 }

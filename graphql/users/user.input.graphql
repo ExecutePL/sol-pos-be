@@ -9,6 +9,7 @@ extend input UpdateUserInput {
     email: String
     email_verified_at: DateTime
     password: String
+    wallet_address: String
 }
 
 extend input BelongsToUser {
