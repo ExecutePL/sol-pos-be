@@ -9,7 +9,7 @@ extend type Mutation {
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
         password: String! @rules(apply: ["min:8"])
-    ): User!
+    ): User! @create
     updateUser(id: ID!, input: UpdateUserInput! @spread): User! @update
     deleteUser(id: ID!): User! @delete
     loginUser(email: String!, password: String!): User!
