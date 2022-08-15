@@ -2,6 +2,10 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Bill;
+use App\Models\OrderedProduct;
+use App\Models\Product;
+
 final class UpdateOrderedProduct
 {
     /**
@@ -10,8 +14,15 @@ final class UpdateOrderedProduct
      */
     public function __invoke($_, array $args)
     {
-        print_r($args);
-        die();
-        // TODO implement the resolver
+        $ordered_product = OrderedProduct::where('id',$args['id'])->first();
+        if($args['status'] == 3){
+            $bill = Bill::where('id',$ordered_product->bill_id)->first();
+            $product = Product::where('id',$ordered_product->product_id)->first();
+            $bill->sum -= $product->price;
+            $bill->save();
+
+        }
+        $ordered_product->save();
+        return $ordered_product;
     }
 }
