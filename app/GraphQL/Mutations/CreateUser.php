@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\User;
+
 final class CreateUser
 {
     /**
@@ -10,6 +12,8 @@ final class CreateUser
      */
     public function __invoke($_, array $args)
     {
-        // TODO implement the resolver
+        $new_user = new User($args);
+        $new_user->save();
+
     }
 }
