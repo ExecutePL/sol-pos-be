@@ -23,7 +23,7 @@ type PointOfSale {
     created_at: DateTime!
     updated_at: DateTime!
     user: User! @belongsTo
-    bills: Bill @hasMany
+    bills: [Bill!] @hasMany
 }
 
 #import pointofsale.input.graphql
