@@ -15,6 +15,7 @@ final class UpdateOrderedProduct
     public function __invoke($_, array $args)
     {
         $ordered_product = OrderedProduct::where('id',$args['id'])->first();
+        $ordered_product->status = $args['status'];
         if($args['status'] == 3){
             $bill = Bill::where('id',$ordered_product->bill_id)->first();
             $product = Product::where('id',$ordered_product->product_id)->first();
