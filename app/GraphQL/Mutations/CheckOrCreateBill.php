@@ -15,15 +15,15 @@ final class CheckOrCreateBill
     public function __invoke($_, array $args)
     {
         $bill = Bill::where('pos_id',$args['pos_id'])->where('status',1)->first();
+        $pos = PointOfSale::where('id',$args['pos_id'])->first();
+        $pos->status = 2;
+        $pos->save();
         if(!$bill){
-            $pos = PointOfSale::where('id',$args['pos_id'])->first();
             $args['user_id'] = $pos->user_id;
             $worker = Worker::where('user_id',$pos->user_id)->first();
             $args['worker_id'] = $worker->id;
             $bill = new Bill($args);
             $bill->save();
-            $pos->status = 2;
-            $pos->save();
         }
         return $bill;
     }

@@ -2,6 +2,9 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Models\Bill;
+use App\Models\PointOfSale;
+
 final class UpdateBill
 {
     /**
@@ -10,8 +13,17 @@ final class UpdateBill
      */
     public function __invoke($_, array $args)
     {
-        print_r($args);
-        die();
-        // TODO implement the resolver
+        $bill = Bill::where('id',$args['id'])->first();
+        foreach($args as $key => $value){
+            if($key == "id") continue;
+            $bill->$key = $value;
+        }
+        $bill->save();
+        if($bill->status == 2){
+            $pos = PointOfSale::where('id',$bill->pos_id)->first();
+            $pos->status = 1;
+            $pos->save();
+        }
+        return $bill;
     }
 }
