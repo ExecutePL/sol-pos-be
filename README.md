@@ -1,5 +1,5 @@
 # SOLPOS - POS system
-![alt text](https://user-images.githubusercontent.com/94838246/184983416-27982fe5-2c02-4c68-b6c6-d34e20b9464a.png)
+![SOLPOS_LOGO](https://user-images.githubusercontent.com/94838246/184983416-27982fe5-2c02-4c68-b6c6-d34e20b9464a.png)
 
 We create easy to use POS system for 
 restaurants industry based on QR Code 
