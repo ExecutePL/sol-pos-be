@@ -19,6 +19,7 @@ input HasManyPointsOfSale
 type PointOfSale {
     id: ID!
     name: String!
+    public_key: String!
     status: Int
     created_at: DateTime!
     updated_at: DateTime!

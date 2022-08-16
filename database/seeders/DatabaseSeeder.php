@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => 'TestHash',
-                'wallet_address' => Str::random(18),
+                'wallet_address' => '7GK7JHRtsmDCBx8H3bRi4kUDE9NpUtaC31bTGDA6aLYJ',
                 'remember_token' => Str::random(60),
             ]
         );
@@ -50,24 +50,6 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Cheese Chips',
                 'description' => '100g chips but with chees',
                 'price' => 2.99,
-                'user_id' => 1,
-            ]
-        );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 1',
-                'user_id' => 1,
-            ]
-        );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 2',
-                'user_id' => 1,
-            ]
-        );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 3',
                 'user_id' => 1,
             ]
         );

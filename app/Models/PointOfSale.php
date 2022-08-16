@@ -15,6 +15,7 @@ class PointOfSale extends Model
 
     protected $fillable = [
         'name',
+        'public_key',
         'status',
         'user_id'
     ];
