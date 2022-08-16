@@ -564,7 +564,7 @@ export const OrderList = () => {
                     </TableBody>
                 </Table>
                 <a
-                    href={`solana:${userData["wallet_address"]}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                    href={`solana:${userData.me["wallet_address"]}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
                 >
                     Pay poor man
                 </a>
