@@ -1,11 +1,13 @@
 extend input CreatePointOfSaleInput {
     name: String!
+    public_key: String!
     status: Int
     bills: HasManyBills
 }
 
 extend input UpdatePointOfSaleInput {
     name: String
+    public_key: String
     status: Int
     bills: HasManyBills
 }

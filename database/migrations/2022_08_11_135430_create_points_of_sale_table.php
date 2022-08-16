@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('points_of_sale', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('public_key');
             $table->integer('status')->default(1);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
