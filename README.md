@@ -1,46 +1,66 @@
-# Getting Started with Create React App
+# SOLPOS - POS system
+![alt text](https://user-images.githubusercontent.com/94838246/184983416-27982fe5-2c02-4c68-b6c6-d34e20b9464a.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+We create easy to use POS system for 
+restaurants industry based on QR Code 
+generation and connected to Solana 
+blockchain.
 
-## Available Scripts
+## Build Process
 
-In the project directory, you can run:
+### One click
 
-### `npm start`
+You'll need a Heroku account to deploy the app
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+https://heroku.com/deploy?template=https://github.com/ExecutePL/sol-pos-be/
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### or
 
-### `npm test`
+### Clone repository
+_Below is an example of how you can installing and setting up this app. This template doesn't rely on any external dependencies or services._
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/ExecutePL/sol-pos-be
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. In the project directory, you can run:
+   ```js
+   npm start
+   ```
+Open http://localhost:3000 to view it in the browser.
 
-### `npm run build`
+## How it works?
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Client side
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Scan the QR code from the table you are sitting on
+2. Order food through the app
+3. Eat your food
+4. Scan the QR code from your Pos Terminal to finalize your payment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Restaurant owner
 
-### `npm run eject`
+1. Add tables to the system
+2. Print QR at tables
+3. Insert products and waiters to the  system
+4. Install payment terminal in your location
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### POS terminal prototype
+![alt text](https://user-images.githubusercontent.com/94838246/184988472-a0417265-3a27-4be8-ab1c-2f33b2f0f07c.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Tech Stack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+ReactJS, GraphQL, PHP, C++, Solana Pay
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Contributors
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Marek [MarekZ](https://github.com/katakumby)
+- Bruno [brunocisowski](https://github.com/brunocisowski)
+- Piotr [PMPSpadlo](https://github.com/PMPSpadlo)
+- Veronika [veronikadumalo](https://github.com/veronikadumalo)
+- Filip [wojcikfil](https://github.com/wojcikfil)
+- Kuba [Kubaszenko](https://github.com/Kubaszenko)
