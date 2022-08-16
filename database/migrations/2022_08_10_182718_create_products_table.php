@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('featured')->default(0);
             $table->double('price')->default(0.00);
             $table->integer('sort_order')->unsigned()->default(0);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
