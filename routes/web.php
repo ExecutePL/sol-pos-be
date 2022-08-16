@@ -22,5 +22,5 @@ Route::any('{catchall}', function ($route) {
     if(file_exists(base_path() . '/build/'.$route)){
         return \File::get(base_path() . '/build/'.$route);
     }
-    return \File::get(public_path() . '/index.html');
+    return \File::get(base_path() . '/build/index.html');
 })->where('catchall', '.*');
