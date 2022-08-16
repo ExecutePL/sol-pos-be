@@ -9,5 +9,10 @@
             "description": "Application key",
             "value": "base64:RNtMXD9kSkzDrCrWmLPZK0vjkZEBDrF2jpRYjUCL+0k="
         }
-    }
+    },
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-php"
+        }
+    ]
 }
