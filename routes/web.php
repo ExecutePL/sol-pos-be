@@ -13,14 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return \File::get(public_path() . '/index.html');
-////    return view('welcome');
-//});
-Route::any('{catchall}', function ($route) {
-
-    if(file_exists(base_path() . '/build/'.$route)){
-        return \File::get(base_path() . '/build/'.$route);
-    }
-    return \File::get(base_path() . '/build/index.html');
-})->where('catchall', '.*');
+Route::get('/', function () {
+    return \File::get(public_path() . '/index.html');
+//    return view('welcome');
+});
