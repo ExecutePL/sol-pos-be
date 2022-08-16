@@ -12,7 +12,7 @@ extend type Mutation {
     ): User! @create
     updateUser(id: ID!, input: UpdateUserInput! @spread): User! @update
     deleteUser(id: ID!): User! @delete
-    loginUser(email: String!, password: String!): User!
+    loginUser(email: String!, password: String!): String!
     logoutUser: User @guard
 }
 
@@ -32,7 +32,6 @@ type User {
     password: String!
     created_at: DateTime!
     updated_at: DateTime!
-    remember_token: String
     products: [Product!] @hasMany
     pointsOfSale: [PointOfSale!] @hasMany
     workers: [Worker!] @hasMany
