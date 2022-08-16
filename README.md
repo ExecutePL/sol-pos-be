@@ -64,3 +64,7 @@ ReactJS, GraphQL, PHP, C++, Solana Pay
 - Veronika [veronikadumalo](https://github.com/veronikadumalo)
 - Filip [wojcikfil](https://github.com/wojcikfil)
 - Kuba [Kubaszenko](https://github.com/Kubaszenko)
+
+## Social media
+
+[Twitter](https://twitter.com/real_solpos)
