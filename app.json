@@ -3,7 +3,10 @@
     "description": "Solana Point-of-sale for restaurants",
     "repository": "https://github.com/ExecutePL/sol-pos-be",
     "logo": "https://cryptologos.cc/logos/solana-sol-logo.png?v=023",
-    "keywords": ["node", "express", "static"],
+    "keywords": ["solana", "graphql", "nodejs"],
+    "scripts": {
+        "postdeploy": "php artisan migrate:fresh --seed"
+    },
     "env": {
         "APP_KEY": {
             "description": "Application key",
