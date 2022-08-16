@@ -1,0 +1,7 @@
+{
+    "name": "solpos",
+    "description": "Solana Point-of-sale for restaurants",
+    "repository": "https://github.com/ExecutePL/sol-pos-be",
+    "logo": "https://node-js-sample.herokuapp.com/node.png",
+    "keywords": ["node", "express", "static"]
+}
