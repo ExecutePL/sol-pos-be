@@ -18,6 +18,6 @@ final class LoginUserByWorker
         $worker = Worker::where('remember_token', $args['remember_token'])->first();
         $user = User::where('id', $worker->user_id)->first();
 
-        return $user->createToken($user->mail)->plainTextToken;
+        return $user->createToken($user->email)->plainTextToken;
     }
 }
