@@ -14,7 +14,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import { useEffect, useState } from "react";
 import { Table } from "./Table";
 import { useMutation, useQuery } from "@apollo/client";
-import { POINTS_OF_SALE } from "../api/gql/queries/pointsOfSale/pointsOfSale";
 import React from "react";
 import { CREATE_POINT_OF_SALE } from "../api/gql/mutations/pointsOfSale/createPointOfSale";
 import { DELETE_POINT_OF_SALE } from "../api/gql/mutations/pointsOfSale/deletePointOfSale";
@@ -44,6 +43,8 @@ export const Tables = () => {
         PointOfSale | undefined
     >();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isWaiterLogin, setIsWaiterLogin] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const { data, loading } = useQuery(USER);
     const [createTable, { loading: createTableLoading }] = useMutation(
@@ -72,35 +73,32 @@ export const Tables = () => {
     }, [data]);
 
     const { waiterToken } = useParams() as { waiterToken: string };
-    // useEffect(() => {
-    //     if (waiterToken) {
-    //         localStorage.setItem("login", waiterToken);
-    //     }
-    // }, []);
 
     const [loginUserByWorker, { loading: loginUserByWorkerLoading }] =
         useMutation(LOGIN_USER_BY_WORKER);
 
     useEffect(() => {
         if (waiterToken) {
-            // setIsWaiter(true);
-            console.log(waiterToken);
             loginUserByWorker({
                 variables: { remember_token: waiterToken },
                 onCompleted: (data) => {
-                    const loginToken = data.loginUser;
+                    const loginToken = data.loginUserByWorker;
                     localStorage.setItem("login", loginToken);
-
-                    // setIsLoginError(false);
-                    // navigate("/tables");
+                    localStorage.setItem("isWaiter", "true");
+                    setIsWaiterLogin(true);
                 },
                 onError: () => {
                     localStorage.removeItem("login");
+                    localStorage.removeItem("isWaiter");
                     navigate("/");
                 },
             });
         }
-        // setIsWaiter(false);
+    }, []);
+
+    useEffect(() => {
+        const isWaiterLogin = Boolean(localStorage.getItem("isWaiter"));
+        setIsWaiterLogin(isWaiterLogin);
     }, []);
 
     useEffect(() => {
@@ -108,9 +106,16 @@ export const Tables = () => {
             loading ||
             updateTableLoading ||
             createTableLoading ||
-            removeTableLoading;
+            removeTableLoading ||
+            loginUserByWorkerLoading;
         setIsLoading(isLoading);
-    }, [createTableLoading, loading, removeTableLoading, updateTableLoading]);
+    }, [
+        createTableLoading,
+        loading,
+        removeTableLoading,
+        updateTableLoading,
+        loginUserByWorkerLoading,
+    ]);
 
     const handleNewTable = () => {
         if (newTableName) {
@@ -227,24 +232,27 @@ export const Tables = () => {
                         handleTableDelete={() => handleTableDelete(table.id)}
                         tableId={table.id}
                         tableStatus={table.status}
+                        isWaiterLogin={isWaiterLogin}
                     />
                 ))}
         </Box>
     );
     return (
         <>
-            <Fab
-                css={css`
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                `}
-                color="primary"
-                aria-label="add"
-                onClick={() => setIsDialogOpened(true)}
-            >
-                <AddIcon />
-            </Fab>
+            {!isWaiterLogin && (
+                <Fab
+                    css={css`
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                    `}
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => setIsDialogOpened(true)}
+                >
+                    <AddIcon />
+                </Fab>
+            )}
             {tableList}
             {addNewTableDialog}
             {editTableDialog}

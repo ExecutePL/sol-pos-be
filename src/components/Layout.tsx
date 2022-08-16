@@ -12,118 +12,124 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import { useColorScheme } from "@mui/material/styles";
 
 interface LayoutProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export type Tab = {
-  name: string;
-  path: string;
-  icon: ReactNode;
+    name: string;
+    path: string;
+    icon: ReactNode;
+    user: "all" | "admin";
 };
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { setMode } = useColorScheme();
-  const DRAWER_WIDTH = 240 as const;
-  const tabs: Tab[] = [
-    {
-      icon: <TableBarIcon fontSize="small" />,
-      name: "Tables",
-      path: "/tables",
-    },
-    {
-      icon: <Inventory2OutlinedIcon fontSize="small" />,
-      name: "Products",
-      path: "/products",
-    },
-    {
-      icon: <PeopleOutlineIcon fontSize="small" />,
-      name: "Waiters",
-      path: "/waiters",
-    },
-    {
-      icon: <MonetizationOnOutlinedIcon fontSize="small" />,
-      name: "Transactions",
-      path: "/transactions",
-    },
-  ];
+    const { setMode } = useColorScheme();
+    const DRAWER_WIDTH = 240 as const;
+    const tabs: Tab[] = [
+        {
+            icon: <TableBarIcon fontSize="small" />,
+            name: "Tables",
+            path: "/tables",
+            user: "all",
+        },
+        {
+            icon: <Inventory2OutlinedIcon fontSize="small" />,
+            name: "Products",
+            path: "/products",
+            user: "admin",
+        },
+        {
+            icon: <PeopleOutlineIcon fontSize="small" />,
+            name: "Waiters",
+            path: "/waiters",
+            user: "admin",
+        },
+        {
+            icon: <MonetizationOnOutlinedIcon fontSize="small" />,
+            name: "Transactions",
+            path: "/transactions",
+            user: "admin",
+        },
+    ];
 
-  const [activeTab, setActiveTab] = useState<Tab | undefined>(undefined);
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
+    const [activeTab, setActiveTab] = useState<Tab | undefined>(undefined);
+    const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+    const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
 
-  const location = useLocation();
-  useEffect(() => {
-    const login = localStorage.getItem("login");
-    setIsUserLogin(Boolean(login));
-  }, []);
+    const location = useLocation();
+    useEffect(() => {
+        const login = localStorage.getItem("login");
+        setIsUserLogin(Boolean(login));
+    }, []);
 
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+    const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
-  const handleActiveTab = () => {
-    const isHomePage = location?.pathname === "/";
-    if (isHomePage)
-      return setActiveTab({
-        name: "Tables",
-        path: "/tables",
-        icon: <TableBarIcon />,
-      });
+    const handleActiveTab = () => {
+        const isHomePage = location?.pathname === "/";
+        if (isHomePage)
+            return setActiveTab({
+                name: "Tables",
+                path: "/tables",
+                icon: <TableBarIcon />,
+                user: "all",
+            });
 
-    const activeTab = tabs.find((tab) => tab.path === location?.pathname);
-    setActiveTab(activeTab);
-  };
+        const activeTab = tabs.find((tab) => tab.path === location?.pathname);
+        setActiveTab(activeTab);
+    };
 
-  useEffect(() => {
-    handleActiveTab();
-  }, [location]);
+    useEffect(() => {
+        handleActiveTab();
+    }, [location]);
 
-  useEffect(() => {
-    setMode("dark");
-  }, []);
+    useEffect(() => {
+        setMode("dark");
+    }, []);
 
-  const isPageWithOutLayout = location.pathname === "/" && !isUserLogin;
+    const isPageWithOutLayout = location.pathname === "/" && !isUserLogin;
 
-  const theme = createTheme({
-    components: {
-      MuiButton: {
-        variants: [
-          {
-            props: { variant: "dashed" },
-            style: {
-              textTransform: "none",
-              border: `2px dashed ${blue[500]}`,
+    const theme = createTheme({
+        components: {
+            MuiButton: {
+                variants: [
+                    {
+                        props: { variant: "dashed" },
+                        style: {
+                            textTransform: "none",
+                            border: `2px dashed ${blue[500]}`,
+                        },
+                    },
+                    {
+                        props: { variant: "dashed", color: "secondary" },
+                        style: {
+                            border: `4px dashed ${red[500]}`,
+                        },
+                    },
+                ],
             },
-          },
-          {
-            props: { variant: "dashed", color: "secondary" },
-            style: {
-              border: `4px dashed ${red[500]}`,
-            },
-          },
-        ],
-      },
-    },
-  });
+        },
+    });
 
-  return (
-    <ThemeProvider theme={theme}>
-      {isPageWithOutLayout ? (
-        <>{children}</>
-      ) : (
-        <Box sx={{ display: "flex" }}>
-          <Sidebar
-            tabs={tabs}
-            mobileOpen={mobileOpen}
-            drawerWidth={DRAWER_WIDTH}
-            onDrawerToggle={handleDrawerToggle}
-          />
-          <Header
-            onDrawerToggle={handleDrawerToggle}
-            activeTab={activeTab}
-            drawerWidth={DRAWER_WIDTH}
-          />
-          <RouteContent>{children}</RouteContent>
-        </Box>
-      )}
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            {isPageWithOutLayout ? (
+                <>{children}</>
+            ) : (
+                <Box sx={{ display: "flex" }}>
+                    <Sidebar
+                        tabs={tabs}
+                        mobileOpen={mobileOpen}
+                        drawerWidth={DRAWER_WIDTH}
+                        onDrawerToggle={handleDrawerToggle}
+                    />
+                    <Header
+                        onDrawerToggle={handleDrawerToggle}
+                        activeTab={activeTab}
+                        drawerWidth={DRAWER_WIDTH}
+                    />
+                    <RouteContent>{children}</RouteContent>
+                </Box>
+            )}
+        </ThemeProvider>
+    );
 };

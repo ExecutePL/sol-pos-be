@@ -10,109 +10,117 @@ import CloseIcon from "@mui/icons-material/Close";
 import TableBarIcon from "@mui/icons-material/TableBar";
 
 interface TableProps {
-  tableId: number;
-  tableName: string;
-  tableStatus: number;
-  handleEditButtonClick: MouseEventHandler;
-  handleTableDelete: MouseEventHandler;
+    tableId: number;
+    tableName: string;
+    tableStatus: number;
+    handleEditButtonClick: MouseEventHandler;
+    handleTableDelete: MouseEventHandler;
+    isWaiterLogin?: boolean;
 }
 
 export const Table = ({
-  tableId,
-  tableName,
-  tableStatus,
-  handleEditButtonClick,
-  handleTableDelete,
+    tableId,
+    tableName,
+    tableStatus,
+    handleEditButtonClick,
+    handleTableDelete,
+    isWaiterLogin,
 }: TableProps) => {
-  return (
-    <Box>
-      <Box
-        css={css`
-          padding: 30px;
-          border: 2px solid var(--mui-palette-primary-main);
-          border-radius: 50%;
-          width: 200px;
-          height: 200px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          gap: 10px;
-        `}
-      >
-        <Link
-          css={css`
-            text-decoration: none;
-          `}
-          to={`/orders/${tableId}`}
-        >
-          <Typography
-            sx={{ fontWeight: "bold", fontSize: 20, color: "primary.light" }}
-            css={css`
-              white-space: break-spaces;
-              text-align: center;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 10px;
-            `}
-          >
-            <TableBarIcon />
-            <span
-              css={css`
-                line-height: 24px;
-              `}
+    return (
+        <Box>
+            <Box
+                css={css`
+                    padding: 30px;
+                    border: 2px solid var(--mui-palette-primary-main);
+                    border-radius: 50%;
+                    width: 200px;
+                    height: 200px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                `}
             >
-              {tableName}
-            </span>
-          </Typography>
-          <Box
-            sx={{ color: "primary.light" }}
-            css={css`
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 5px;
-              padding: 5px 0;
-            `}
-          >
-            {tableStatus === 1 ? (
-              <>
-                <span>FREE</span>
-                <CheckIcon />
-              </>
-            ) : (
-              <>
-                <span>BUSY</span>
-                <CloseIcon />
-              </>
-            )}
-          </Box>
-        </Link>
-        <div
-          css={css`
-            display: flex;
-            gap: 10px;
-          `}
-        >
-          <Fab
-            color="primary"
-            aria-label="edit"
-            size="small"
-            onClick={handleEditButtonClick}
-          >
-            <EditIcon />
-          </Fab>
-          <Fab
-            color="primary"
-            aria-label="delete"
-            size="small"
-            onClick={handleTableDelete}
-          >
-            <DeleteIcon />
-          </Fab>
-        </div>
-      </Box>
-    </Box>
-  );
+                <Link
+                    css={css`
+                        text-decoration: none;
+                    `}
+                    to={`/orders/${tableId}`}
+                >
+                    <Typography
+                        sx={{
+                            fontWeight: "bold",
+                            fontSize: 20,
+                            color: "primary.light",
+                        }}
+                        css={css`
+                            white-space: break-spaces;
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                        `}
+                    >
+                        <TableBarIcon />
+                        <span
+                            css={css`
+                                line-height: 24px;
+                            `}
+                        >
+                            {tableName}
+                        </span>
+                    </Typography>
+                    <Box
+                        sx={{ color: "primary.light" }}
+                        css={css`
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 5px;
+                            padding: 5px 0;
+                        `}
+                    >
+                        {tableStatus === 1 ? (
+                            <>
+                                <span>FREE</span>
+                                <CheckIcon />
+                            </>
+                        ) : (
+                            <>
+                                <span>BUSY</span>
+                                <CloseIcon />
+                            </>
+                        )}
+                    </Box>
+                </Link>
+                {!isWaiterLogin && (
+                    <div
+                        css={css`
+                            display: flex;
+                            gap: 10px;
+                        `}
+                    >
+                        <Fab
+                            color="primary"
+                            aria-label="edit"
+                            size="small"
+                            onClick={handleEditButtonClick}
+                        >
+                            <EditIcon />
+                        </Fab>
+                        <Fab
+                            color="primary"
+                            aria-label="delete"
+                            size="small"
+                            onClick={handleTableDelete}
+                        >
+                            <DeleteIcon />
+                        </Fab>
+                    </div>
+                )}
+            </Box>
+        </Box>
+    );
 };
