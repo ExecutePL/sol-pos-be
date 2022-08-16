@@ -68,3 +68,4 @@ ReactJS, GraphQL, PHP, C++, Solana Pay
 ## Social media
 
 [Twitter](https://twitter.com/real_solpos)
+[Instagram](https://www.instagram.com/real_solpos/)
