@@ -2,6 +2,25 @@
     "name": "solpos",
     "description": "Solana Point-of-sale for restaurants",
     "repository": "https://github.com/ExecutePL/sol-pos-be",
-    "logo": "https://node-js-sample.herokuapp.com/node.png",
-    "keywords": ["node", "express", "static"]
+    "logo": "https://cryptologos.cc/logos/solana-sol-logo.png?v=023",
+    "keywords": ["node", "express", "static"],
+    "env": {
+        "APP_KEY": {
+            "description": "Application key",
+            "value": "base64:RNtMXD9kSkzDrCrWmLPZK0vjkZEBDrF2jpRYjUCL+0k="
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-php"
+        }
+    ],
+    "addons": [
+        {
+            "plan": "heroku-postgresql",
+            "options": {
+                "version": "9.5"
+            }
+        }
+    ]
 }
