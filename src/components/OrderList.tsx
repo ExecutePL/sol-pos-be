@@ -200,10 +200,14 @@ export const OrderList = () => {
         },
     });
 
+    const [isClient, setIsClient] = useState<boolean>(false);
     useEffect(() => {
         checkOrCreateBill({
             variables: { posId: tableId, userId: 1, workerId: 1 },
         });
+        const isClient =
+            !localStorage.getItem("login") && !localStorage.getItem("isWaiter");
+        setIsClient(isClient);
     }, []);
 
     useEffect(() => {
@@ -350,11 +354,11 @@ export const OrderList = () => {
     );
     return (
         <>
-            <Box>
+            <Box sx={{ width: "100%", marginBottom: "80px" }}>
                 <Box
                     css={css`
                         border-bottom: 1px solid;
-                        padding: 30px 0 10px;
+                        padding: 30px 15px 10px;
                         display: flex;
                         justify-content: space-between;
                         align-items: flex-end;
@@ -570,22 +574,6 @@ export const OrderList = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <Button
-                    variant="contained"
-                    css={css`
-                        margin-top: 20px;
-                    `}
-                >
-                    <a
-                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
-                        css={css`
-                            text-decoration: none;
-                            color: inherit;
-                        `}
-                    >
-                        Pay
-                    </a>
-                </Button>
             </Box>
             {editOrderedProductStatus}
             {editTips}
@@ -597,14 +585,28 @@ export const OrderList = () => {
                     bottom: 20px;
                     right: 20px;
                 `}
-                onClick={generateQR}
+                onClick={!isClient ? generateQR : () => 0}
             >
-                <QrCode2Icon
-                    css={css`
-                        margin-right: 10px;
-                    `}
-                />
-                <span>Print table qr code</span>
+                {!isClient ? (
+                    <a
+                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                        css={css`
+                            text-decoration: none;
+                            color: inherit;
+                        `}
+                    >
+                        Pay
+                    </a>
+                ) : (
+                    <>
+                        <QrCode2Icon
+                            css={css`
+                                margin-right: 10px;
+                            `}
+                        />
+                        <span>Print table qr code</span>
+                    </>
+                )}
             </Button>
         </>
     );
