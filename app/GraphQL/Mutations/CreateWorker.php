@@ -18,7 +18,7 @@ final class CreateWorker
         $worker = new Worker();
         $worker->name = $args['name'];
         $worker->remember_token = Str::random(60);
-        $worker->user_id = $guard->id();
+        $worker->user_id = 1;
         $worker->save();
         return $worker;
     }
