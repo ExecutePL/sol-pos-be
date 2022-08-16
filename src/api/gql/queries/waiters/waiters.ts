@@ -6,6 +6,7 @@ export const WAITERS = gql`
       data {
         id
         name
+        token: remember_token
       }
     }
   }

@@ -17,6 +17,7 @@
         "@types/react": "^18.0.17",
         "@types/react-dom": "^18.0.6",
         "graphql": "^16.5.0",
+        "qrcode": "^1.5.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.3.0",
@@ -47,5 +48,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    }
+    },
+    "devDependencies": {
+        "@types/qrcode": "^1.4.3"
+    },
+    "proxy": "https://solposbe.herokuapp.com/graphql"
 }

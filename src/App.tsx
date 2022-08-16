@@ -3,6 +3,7 @@ import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme,
 } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { OrderList } from "./components/OrderList";
@@ -13,6 +14,7 @@ import { Transactions } from "./views/Transactions";
 import { Waiters } from "./views/Waiters";
 
 const App = () => {
+  const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
   const themeColors = experimental_extendTheme({
     colorSchemes: {
       light: {
@@ -36,7 +38,10 @@ const App = () => {
       },
     },
   });
-  const isUserLogin = true;
+  useEffect(() => {
+    const login = localStorage.getItem("login");
+    setIsUserLogin(Boolean(login));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -46,6 +51,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={isUserLogin ? <Tables /> : <Home />} />
             <Route path="tables" element={<Tables />} />
+            <Route path="tables/:waiterToken" element={<Tables />} />
             <Route path="products" element={<Products />} />
             <Route path="waiters" element={<Waiters />} />
             <Route path="transactions" element={<Transactions />} />

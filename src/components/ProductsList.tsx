@@ -17,6 +17,7 @@ import { CREATE_PRODUCT } from "../api/gql/mutations/products/createProduct";
 import { UPDATE_PRODUCT } from "../api/gql/mutations/products/updateProducts";
 import SaveIcon from "@mui/icons-material/Save";
 import { Loading } from "./Loading";
+import { USER } from "../api/gql/queries/user";
 
 interface Product {
   id: number;
@@ -67,9 +68,9 @@ export const ProductsList = () => {
     active,
   });
 
-  const { loading } = useQuery(PRODUCTS, {
+  const { loading } = useQuery(USER, {
     onCompleted: (data) => {
-      const rows = data.products.data.map(
+      const rows = data.me.products.map(
         ({ id, name, description, price, active }: Product) =>
           createData(id, name, description, price, active)
       );
@@ -97,7 +98,7 @@ export const ProductsList = () => {
   const handleCreateProduct = () => {
     const { name, description, price, active } = newProduct;
     createProduct({
-      variables: { name, description, price, active, userId: 1 },
+      variables: { name, description, price, active },
       onCompleted: (data) => {
         const rows = data.createProduct.user.products.map(
           ({ id, name, description, price, active }: Product) =>

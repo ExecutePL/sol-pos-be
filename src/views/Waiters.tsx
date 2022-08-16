@@ -24,12 +24,15 @@ import { REMOVE_WAITER } from "../api/gql/mutations/waiters/removeWaiter";
 import { UPDATE_WAITER } from "../api/gql/mutations/waiters/updateWorker";
 import { Loading } from "../components/Loading";
 import { css } from "@emotion/react";
+import QRCode, { QRCodeToDataURLOptions } from "qrcode";
+import { USER } from "../api/gql/queries/user";
 type Waiter = {
   id: number;
   name: string;
+  remember_token: string;
 };
 export const Waiters = () => {
-  const { data, loading } = useQuery(WAITERS);
+  const { data, loading } = useQuery(USER);
   const [waiters, setWaiters] = useState<Waiter[]>([]);
   const [isDialogOpened, setIsDialogOpened] = useState<boolean>(false);
   const [newWaiterName, setNewWaiterName] = useState<string | undefined>(
@@ -37,11 +40,15 @@ export const Waiters = () => {
   );
   const [selectedWaiter, setSelectedWaiter] = useState<Waiter | undefined>();
   const [isEditDialogOpened, setIsEditDialogOpened] = useState<boolean>(false);
+  const [waiterQRCode, setWaiterQRCode] = useState<string>("");
+  const [isWaiterQRCodeDialogOpened, setIsWaiterQRCodeDialogOpened] =
+    useState<boolean>(false);
 
   const [createWaiter, { loading: createWaiterLoading }] = useMutation(
     CREATE_WAITER,
     {
-      refetchQueries: [WAITERS],
+      refetchQueries: [USER],
+      onCompleted: (data) => console.log(data),
     }
   );
   const [removeWaiter, { loading: removeWaiterLoading }] =
@@ -49,15 +56,16 @@ export const Waiters = () => {
   const [updateWaiter, { loading: updateWaiterLoading }] = useMutation(
     UPDATE_WAITER,
     {
-      refetchQueries: [WAITERS],
+      refetchQueries: [USER],
     }
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!data) return;
-    const waiters = data.workers.data;
+    const waiters = data.me.workers;
     setWaiters(waiters);
+    console.log(waiters);
   }, [data]);
 
   useEffect(() => {
@@ -84,7 +92,6 @@ export const Waiters = () => {
     createWaiter({
       variables: {
         name: newWaiterName,
-        userId: 1,
       },
     }).then((result) => {
       if (result) {
@@ -116,6 +123,23 @@ export const Waiters = () => {
     setSelectedWaiter(waiter);
     console.log(waiter);
     setIsEditDialogOpened(true);
+  };
+
+  const generateQRCode = (waiterToken: string) => {
+    console.log(waiterToken);
+    QRCode.toDataURL(
+      `${window.location.origin}/tables/${waiterToken}`,
+      {
+        errorCorrectionLevel: "H",
+        scale: 10,
+        margin: 1,
+      } as QRCodeToDataURLOptions,
+      (err, url) => {
+        if (err) throw err;
+        setIsWaiterQRCodeDialogOpened(true);
+        setWaiterQRCode(url);
+      }
+    );
   };
 
   const addNewWaiterDialog = (
@@ -171,6 +195,24 @@ export const Waiters = () => {
     </Dialog>
   );
 
+  const waiterQRCodeDialog = (
+    <Dialog
+      open={isWaiterQRCodeDialogOpened}
+      onClose={() => setIsWaiterQRCodeDialogOpened(false)}
+    >
+      <div style={{ padding: "20px" }}>
+        <img
+          css={css`
+            width: 100%;
+            height: auto;
+          `}
+          src={waiterQRCode}
+          alt="Waiter QR Code"
+        />
+      </div>
+    </Dialog>
+  );
+
   return (
     <>
       <List sx={{ width: "100%" }}>
@@ -202,7 +244,11 @@ export const Waiters = () => {
                 <DeleteIcon />
               </IconButton>
 
-              <Button variant="contained" sx={{ marginLeft: "20px" }}>
+              <Button
+                variant="contained"
+                sx={{ marginLeft: "20px" }}
+                onClick={() => generateQRCode(waiter.remember_token)}
+              >
                 Generate link
               </Button>
             </div>
@@ -225,6 +271,7 @@ export const Waiters = () => {
       </div>
       {addNewWaiterDialog}
       {editWaiterDialog}
+      {waiterQRCodeDialog}
       {isLoading && <Loading />}
     </>
   );

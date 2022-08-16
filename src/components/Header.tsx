@@ -1,9 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+  useColorScheme,
+} from "@mui/material";
 import { Tab } from "./Layout";
 import { ModeSwitcher } from "./ModeSwitcher";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onDrawerToggle: () => void;
@@ -16,6 +26,13 @@ export const Header = ({
   activeTab,
   drawerWidth,
 }: HeaderProps) => {
+  const { mode } = useColorScheme();
+  const navigate = useNavigate();
+  const handleLogoutClick = () => {
+    localStorage.removeItem("login");
+    localStorage.removeItem("waiterToken");
+    navigate("/");
+  };
   return (
     <header>
       <AppBar
@@ -45,7 +62,26 @@ export const Header = ({
             <Typography variant="h6" noWrap component="div">
               {activeTab?.name}
             </Typography>
-            <ModeSwitcher />
+            <Box
+              css={css`
+                display: flex;
+                gap: 10px;
+              `}
+            >
+              <ModeSwitcher />
+              <Button
+                variant="outlined"
+                sx={{
+                  color:
+                    mode === "light" ? "primary.contrastText" : "primary.main",
+                  borderColor:
+                    mode === "light" ? "primary.contrastText" : "primary.main",
+                }}
+                onClick={handleLogoutClick}
+              >
+                <LogoutIcon />
+              </Button>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
