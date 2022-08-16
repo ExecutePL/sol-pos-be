@@ -47,7 +47,7 @@ export const Tables = () => {
     const [isWaiterLogin, setIsWaiterLogin] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    const { data, loading } = useQuery(USER);
+    const { data, loading, refetch } = useQuery(USER);
     const [createTable, { loading: createTableLoading }] = useMutation(
         CREATE_POINT_OF_SALE,
         {
@@ -87,6 +87,7 @@ export const Tables = () => {
                     localStorage.setItem("login", loginToken);
                     localStorage.setItem("isWaiter", "true");
                     setIsWaiterLogin(true);
+                    refetch();
                 },
                 onError: () => {
                     localStorage.removeItem("login");
