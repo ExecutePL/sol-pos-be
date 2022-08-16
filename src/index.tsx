@@ -13,7 +13,7 @@ import { setContext } from "@apollo/client/link/context";
 const httpLink = createHttpLink({
     uri:
         process.env.NODE_ENV === "production"
-            ? "/"
+            ? "/graphql"
             : "https://solposbe.herokuapp.com/graphql",
 });
 
