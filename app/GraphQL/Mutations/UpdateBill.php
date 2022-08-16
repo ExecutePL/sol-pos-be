@@ -20,7 +20,7 @@ final class UpdateBill
         }
         $bill->total = $bill->sum;
         if($bill->tip != 0){
-            $bill->total = $bill->total * (1+($bill->tip/100));
+            $bill->total = round($bill->total * (1+($bill->tip/100)),2);
         }
         $bill->save();
         if($bill->status == 2){
