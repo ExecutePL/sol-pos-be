@@ -14,11 +14,11 @@ final class CreateWorker
      */
     public function __invoke($_, array $args)
     {
-//        $guard = Auth::guard();
+        $guard = Auth::guard();
         $worker = new Worker();
         $worker->name = $args['name'];
         $worker->remember_token = Str::random(60);
-        $worker->user_id = 1;
+        $worker->user_id = $guard->id();
         $worker->save();
         return $worker;
     }
