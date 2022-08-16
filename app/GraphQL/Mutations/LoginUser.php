@@ -14,18 +14,23 @@ final class LoginUser
      * @param null $_
      * @param array{} $args
      * @return User
-     * @throws ValidationException
+     * @throws Error
      */
     public function __invoke($_, array $args): User
     {
-        $user = User::where('email', $args['email'])->first();
+        $guard = Auth::guard();
 
-        if (! $user || ! Hash::check($args['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                                                        'email' => ['The provided credentials are incorrect.'],
-                                                    ]);
+        if( ! $guard->attempt($args)) {
+            throw new Error('Invalid credentials.');
         }
 
-        return $user->createToken($args['email'])->plainTextToken;
+        /**
+         * Since we successfully logged in, this can no longer be `null`.
+         *
+         * @var \App\Models\User $user
+         */
+        $user = $guard->user();
+
+        return $user;
     }
 }
