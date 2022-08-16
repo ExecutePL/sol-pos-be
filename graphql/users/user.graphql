@@ -12,7 +12,7 @@ extend type Mutation {
     ): User! @create
     updateUser(id: ID!, input: UpdateUserInput! @spread): User! @update
     deleteUser(id: ID!): User! @delete
-    loginUser(email: String!, password: String!): User!
+    loginUser(email: String!, password: String!): String!
     logoutUser: User @guard
 }
 
