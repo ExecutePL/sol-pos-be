@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Singup } from "./Singup";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import Icon from "@mui/material/Icon";
 
 export const Home = () => {
     const [homeForm, setHomeForm] = useState<"login" | "singup">("login");
