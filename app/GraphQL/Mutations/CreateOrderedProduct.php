@@ -21,7 +21,7 @@ final class CreateOrderedProduct
             $bill = Bill::where('id',$args['bill']['connect'])->first();
             $product = Product::where('id',$args['product']['connect'])->first();
             $bill->sum += $product->price;
-            $bill->total +=  round($bill->sum * (1+($bill->tip/100)),2);
+            $bill->total = round($bill->sum * (1+($bill->tip/100)),2);
             $bill->save();
             $new_ordered_product->save();
         }
