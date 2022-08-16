@@ -4,7 +4,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createWorker(input: CreateWorkerInput! @spread): Worker! @guard @auth
+    createWorker(input: CreateWorkerInput! @spread): Worker! @guard
     updateWorker(id: ID!, input: UpdateWorkerInput! @spread): Worker! @update
     deleteWorker(id: ID!): Worker! @delete
 }
