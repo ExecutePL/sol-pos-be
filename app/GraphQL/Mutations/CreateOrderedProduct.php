@@ -14,15 +14,17 @@ final class CreateOrderedProduct
      */
     public function __invoke($_, array $args)
     {
-        $new_ordered_product = new OrderedProduct();
-        $new_ordered_product->bill_id = $args['bill']['connect'];
-        $new_ordered_product->product_id = $args['product']['connect'];
-        $bill = Bill::where('id',$args['bill']['connect'])->first();
-        $product = Product::where('id',$args['product']['connect'])->first();
-        $bill->sum += $product->price;
-        $bill->total += $product->price;
-        $bill->save();
-        $new_ordered_product->save();
-        return $new_ordered_product;
+        for($i = 0; $i < $args['quantity']; $i++){
+            $new_ordered_product = new OrderedProduct();
+            $new_ordered_product->bill_id = $args['bill']['connect'];
+            $new_ordered_product->product_id = $args['product']['connect'];
+            $bill = Bill::where('id',$args['bill']['connect'])->first();
+            $product = Product::where('id',$args['product']['connect'])->first();
+            $bill->sum += $product->price;
+            $bill->total += $product->price;
+            $bill->save();
+            $new_ordered_product->save();
+        }
+        return "Done";
     }
 }

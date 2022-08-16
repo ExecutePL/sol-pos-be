@@ -4,7 +4,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createOrderedProduct(input: CreateOrderedProductInput! @spread): OrderedProduct!
+    createOrderedProduct(quantity: Int!, input: CreateOrderedProductInput! @spread): String!
     updateOrderedProduct(id: ID!, status: Int): OrderedProduct!
     deleteOrderedProduct(id: ID!): OrderedProduct!
 }
