@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Worker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 final class CreateWorker
@@ -13,8 +14,11 @@ final class CreateWorker
      */
     public function __invoke($_, array $args)
     {
-        $worker = new Worker($args);
+        $guard = Auth::guard();
+        $worker = new Worker();
+        $worker->name = $args['name'];
         $worker->remember_token = Str::random(60);
+        $worker->user_id = $guard->id();
         $worker->save();
         return $worker;
     }

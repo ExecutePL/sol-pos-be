@@ -1,7 +1,6 @@
 extend input CreateWorkerInput {
     name: String!
     remember_token: String
-    user: BelongsToUser!
 }
 
 extend input UpdateWorkerInput {

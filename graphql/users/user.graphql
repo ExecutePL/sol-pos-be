@@ -8,7 +8,7 @@ extend type Mutation {
     createUser(
         name: String!
         email: String! @rules(apply: ["email", "unique:users"])
-        password: String! @rules(apply: ["min:8"])
+        password: String!
         wallet_address: String!
     ): String!
     updateUser(id: ID!, input: UpdateUserInput! @spread): User! @update
