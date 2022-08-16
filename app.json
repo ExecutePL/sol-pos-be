@@ -14,5 +14,11 @@
         {
             "url": "https://github.com/heroku/heroku-buildpack-php"
         }
+    ],
+    "addons": [
+        {
+            "plan": "heroku-postgresql",
+
+        }
     ]
 }
