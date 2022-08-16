@@ -20,6 +20,8 @@ import { CREATE_POINT_OF_SALE } from "../api/gql/mutations/pointsOfSale/createPo
 import { DELETE_POINT_OF_SALE } from "../api/gql/mutations/pointsOfSale/deletePointOfSale";
 import { UPDATE_POINT_OF_SALE } from "../api/gql/mutations/pointsOfSale/updatePointOfSale";
 import { Loading } from "../components/Loading";
+import { USER } from "../api/gql/queries/user";
+import { useNavigate, useParams } from "react-router-dom";
 
 type PointOfSale = {
   id: number;
@@ -38,33 +40,40 @@ export const Tables = () => {
   const [isEditDialogOpened, setIsEditDialogOpened] = useState<boolean>(false);
   const [selectedTable, setSelectedTable] = useState<PointOfSale | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { data, loading } = useQuery(POINTS_OF_SALE);
+  const navigate = useNavigate();
+  const { data, loading } = useQuery(USER);
   const [createTable, { loading: createTableLoading }] = useMutation(
     CREATE_POINT_OF_SALE,
     {
-      refetchQueries: [POINTS_OF_SALE],
+      refetchQueries: [USER],
     }
   );
   const [removeTable, { loading: removeTableLoading }] = useMutation(
     DELETE_POINT_OF_SALE,
     {
-      refetchQueries: [POINTS_OF_SALE],
+      refetchQueries: [USER],
     }
   );
   const [updateTable, { loading: updateTableLoading }] = useMutation(
     UPDATE_POINT_OF_SALE,
     {
-      refetchQueries: [POINTS_OF_SALE],
+      refetchQueries: [USER],
     }
   );
 
   useEffect(() => {
     if (!data) return;
-    const tables = data.pointsOfSale.data;
+    const tables = data.me.pointsOfSale;
     setTables(tables);
   }, [data]);
 
+  const { waiterToken } = useParams() as { waiterToken: string };
+  useEffect(() => {
+    if (waiterToken) {
+      localStorage.setItem("waiterToken", waiterToken);
+      navigate("/");
+    }
+  });
   useEffect(() => {
     const isLoading =
       loading || updateTableLoading || createTableLoading || removeTableLoading;
@@ -73,14 +82,12 @@ export const Tables = () => {
 
   const handleNewTable = () => {
     if (newTableName) {
-      createTable({ variables: { name: newTableName, userId: 1 } }).then(
-        (result) => {
-          if (result) {
-            setIsDialogOpened(false);
-            setNewTableName(undefined);
-          }
+      createTable({ variables: { name: newTableName } }).then((result) => {
+        if (result) {
+          setIsDialogOpened(false);
+          setNewTableName(undefined);
         }
-      );
+      });
     }
   };
   const handleNewTableName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +96,7 @@ export const Tables = () => {
   const handleTableDelete = (selectedTableId: number) => {
     if (tables) {
       removeTable({
-        variables: { id: selectedTableId, userId: 1 },
+        variables: { id: selectedTableId },
       });
     }
   };

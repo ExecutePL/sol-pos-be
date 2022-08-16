@@ -12,13 +12,49 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Email from "@mui/icons-material/Email";
 import Lock from "@mui/icons-material/Lock";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "../api/gql/mutations/user/createUser";
+import { useNavigate } from "react-router-dom";
+import { Loading } from "../components/Loading";
 
 interface SingupProps {
   handleLoginClick: MouseEventHandler;
 }
+type UserData = {
+  name?: string;
+  email?: string;
+  walletId?: string;
+  password?: string;
+};
 
 export const Singup = ({ handleLoginClick }: SingupProps) => {
+  const [userData, setUserData] = useState<UserData | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
+  const handleCreateAccountClick = () => {
+    if (
+      !userData?.name ||
+      !userData?.email ||
+      !userData?.walletId ||
+      !userData.password
+    ) {
+      setError("Please, complete all fields");
+    } else {
+      createUser({ variables: { ...userData } });
+    }
+  };
+  const [createUser, { loading }] = useMutation(CREATE_USER, {
+    onCompleted: (data) => {
+      if (!data) return;
+      const loginToken = data.createUser;
+      localStorage.setItem("login", loginToken);
+      setError(undefined);
+      navigate("/tables");
+    },
+    onError: (error) => setError(error.message),
+  });
   return (
     <Box
       css={css`
@@ -60,6 +96,8 @@ export const Singup = ({ handleLoginClick }: SingupProps) => {
           }}
           placeholder="Account name"
           type="text"
+          required
+          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
         />
         <TextField
           id="email"
@@ -73,6 +111,25 @@ export const Singup = ({ handleLoginClick }: SingupProps) => {
           }}
           placeholder="Email Adress"
           type="email"
+          required
+          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+        />
+        <TextField
+          id="wallet"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountBalanceWalletIcon />
+              </InputAdornment>
+            ),
+          }}
+          placeholder="Wallet Adress"
+          type="text"
+          required
+          onChange={(e) =>
+            setUserData({ ...userData, walletId: e.target.value })
+          }
         />
         <TextField
           id="password"
@@ -86,7 +143,22 @@ export const Singup = ({ handleLoginClick }: SingupProps) => {
           }}
           placeholder="Password"
           type="password"
+          required
+          onChange={(e) =>
+            setUserData({ ...userData, password: e.target.value })
+          }
         />
+        {error && (
+          <Typography
+            css={css`
+              color: red;
+              font-size: 11.5px;
+              text-align: center;
+            `}
+          >
+            {error}
+          </Typography>
+        )}
         <Button
           variant="contained"
           size="large"
@@ -94,6 +166,7 @@ export const Singup = ({ handleLoginClick }: SingupProps) => {
             background-color: #8968fc;
             color: #fff;
           `}
+          onClick={handleCreateAccountClick}
         >
           Create account
         </Button>
@@ -139,6 +212,7 @@ export const Singup = ({ handleLoginClick }: SingupProps) => {
           </Button>
         </Typography>
       </FormControl>
+      {loading && <Loading />}
     </Box>
   );
 };

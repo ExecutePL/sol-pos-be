@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const CHECK_OR_CREATE_BILL = gql`
-  mutation CheckOrCreateBill($posId: ID!, $userId: ID!, $workerId: ID!) {
-    checkOrCreateBill(pos_id: $posId, user_id: $userId, worker_id: $workerId) {
+  mutation CheckOrCreateBill($posId: ID!) {
+    checkOrCreateBill(pos_id: $posId) {
       id
       status
       sum

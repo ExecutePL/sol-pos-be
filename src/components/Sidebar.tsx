@@ -41,16 +41,18 @@ export const Sidebar = ({
   const drawer = (
     <div>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          <img
-            src="/solpos.png"
-            alt="Solpos"
-            css={css`
-              max-width: 160px;
-              padding: 10px;
-            `}
-          />
-        </Typography>
+        <Link to="/">
+          <Typography variant="h6" noWrap component="div">
+            <img
+              src="/solpos.png"
+              alt="Solpos"
+              css={css`
+                max-width: 160px;
+                padding: 10px;
+              `}
+            />
+          </Typography>
+        </Link>
       </Toolbar>
       <Divider />
       <List>

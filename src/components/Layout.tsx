@@ -9,6 +9,7 @@ import TableBarIcon from "@mui/icons-material/TableBar";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
+import { useColorScheme } from "@mui/material/styles";
 
 interface LayoutProps {
   children: ReactNode;
@@ -21,6 +22,7 @@ export type Tab = {
 };
 
 export const Layout = ({ children }: LayoutProps) => {
+  const { setMode } = useColorScheme();
   const DRAWER_WIDTH = 240 as const;
   const tabs: Tab[] = [
     {
@@ -47,8 +49,13 @@ export const Layout = ({ children }: LayoutProps) => {
 
   const [activeTab, setActiveTab] = useState<Tab | undefined>(undefined);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
 
   const location = useLocation();
+  useEffect(() => {
+    const login = localStorage.getItem("login");
+    setIsUserLogin(Boolean(login));
+  }, []);
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
@@ -69,7 +76,9 @@ export const Layout = ({ children }: LayoutProps) => {
     handleActiveTab();
   }, [location]);
 
-  const isUserLogin = true;
+  useEffect(() => {
+    setMode("dark");
+  }, []);
 
   const isPageWithOutLayout = location.pathname === "/" && !isUserLogin;
 

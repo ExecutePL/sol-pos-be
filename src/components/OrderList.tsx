@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,21 +16,25 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { POINT_OF_SALE } from "../api/gql/queries/pointOfSale/pointOfSale";
 import { useMutation, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useHref, useLocation, useParams } from "react-router-dom";
 import { PRODUCTS } from "../api/gql/queries/products/products";
-import { Box, Dialog, DialogTitle, Fab } from "@mui/material";
+import { Box, Dialog, DialogTitle, Fab, Typography } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { UPDATE_ORDERED_PRODUCTS } from "../api/gql/mutations/pointsOfSale/updateOrderedProduct";
 import { DELETE_ORDERED_PRODUCT } from "../api/gql/mutations/pointsOfSale/deleteOrderedProduct";
 import { CHECK_OR_CREATE_BILL } from "../api/gql/mutations/bill/checkOrCreateBill";
 import { Loading } from "./Loading";
 import { CREATE_ORDERED_PRODUCT } from "../api/gql/mutations/pointsOfSale/createOrderProduct";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import QRCode, { QRCodeToDataURLOptions } from "qrcode";
+import { UPDATE_BILL } from "../api/gql/mutations/bill/updateBill";
+
 const TAX_RATE = 0.07;
 
 type BillData = {
-  sum: number;
-  tip: number;
-  total: number;
+  sum?: number;
+  tip?: number;
+  total?: number;
   id?: number;
 };
 
@@ -77,7 +83,7 @@ export const OrderList = () => {
   >(undefined);
   const newProductIdRef = useRef<HTMLInputElement>();
   const newProductQtyRef = useRef<HTMLInputElement>();
-  const newOrderedProductIdRef = useRef<HTMLInputElement>();
+  const newOrderedProductIdRef = useRef<HTMLInputElement>(null);
   const { tableId } = useParams();
   const [productsList, setProductsList] = useState<
     {
@@ -93,9 +99,12 @@ export const OrderList = () => {
   const [newProductQty, setNewProductQty] = useState(1);
   const [billData, setBillData] = useState<BillData | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [waiterName, setWaiterName] = useState<string | undefined>(undefined);
   const { loading, data } = useQuery(POINT_OF_SALE, {
     variables: { id: tableId },
   });
+  const [tip, setTip] = useState<number>(0);
+  const [isTipDialogOpened, setIsTipDialogOpened] = useState<boolean>(false);
   useEffect(() => {
     if (!data) return;
     if (!loading) {
@@ -119,7 +128,6 @@ export const OrderList = () => {
             )
         );
         setOrderList(orderedProducts);
-        console.log(data.pointOfSale);
         if (data.pointOfSale.bills[0]) {
           const sum = data.pointOfSale.bills[0].sum;
           const total = data.pointOfSale.bills[0].total;
@@ -132,6 +140,7 @@ export const OrderList = () => {
             id,
           };
           setBillData(billData);
+          setTip(tip);
         }
       } else {
         console.log("No products");
@@ -159,9 +168,10 @@ export const OrderList = () => {
   const [checkOrCreateBill] = useMutation(CHECK_OR_CREATE_BILL, {
     onCompleted: (data) => {
       if (!data) return;
-      console.log(data);
       const waiterName = data.checkOrCreateBill.worker.name;
-      const tableName = data.checkOrCreateBill.pointOfSale.name;
+      setWaiterName(waiterName);
+      const billId = data.checkOrCreateBill.id;
+      setBillData({ ...billData, id: billId });
     },
   });
 
@@ -170,42 +180,51 @@ export const OrderList = () => {
       refetchQueries: [POINT_OF_SALE],
     });
 
+  const [updateBill, { loading: updateBillLoading }] = useMutation(
+    UPDATE_BILL,
+    {
+      refetchQueries: [POINT_OF_SALE],
+    }
+  );
+
   useEffect(() => {
     checkOrCreateBill({
       variables: { posId: tableId, userId: 1, workerId: 1 },
     });
-  }, [tableId]);
+  }, []);
 
   useEffect(() => {
     const isLoading =
       loading ||
       updateProductStatusLoading ||
       deleteProductStatusLoading ||
-      createOrderProductLoading;
+      createOrderProductLoading ||
+      updateBillLoading;
     setIsLoading(isLoading);
   }, [
     deleteProductStatusLoading,
     loading,
     updateProductStatusLoading,
     createOrderProductLoading,
+    updateBillLoading,
   ]);
 
   const handleRemove = (o_id: number) => {
     deleteOrderedProduct({
       variables: { id: o_id },
-    }).then((result) => {
-      if (result) {
-        console.log(result);
-      }
     });
   };
 
   const handleSubmit = () => {
     if (billData) {
-      createOrderedProduct({
-        variables: { billId: billData.id, productId: newProductId },
-      });
+      for (let i = 0; i < newProductQty; i++) {
+        createOrderedProduct({
+          variables: { billId: billData.id, productId: newProductId },
+        });
+      }
     }
+    newProductIdRef.current!.value = "";
+    newProductQtyRef.current!.value = "";
   };
   const handleOrderedProductStatus = () => {
     if (orderedProductStatus) {
@@ -222,6 +241,60 @@ export const OrderList = () => {
     }
   };
 
+  const generateQR = () => {
+    QRCode.toDataURL(
+      window.location.href,
+      {
+        errorCorrectionLevel: "H",
+        scale: 10,
+        margin: 1,
+      } as QRCodeToDataURLOptions,
+      (err, url) => {
+        if (err) throw err;
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `qr_code_${tableId}.png`;
+        a.click();
+      }
+    );
+  };
+
+  const handleTipChange = () => {
+    updateBill({ variables: { billId: billData?.id, tip } }).then((result) => {
+      if (result) {
+        setIsTipDialogOpened(false);
+      }
+    });
+  };
+
+  const editTips = (
+    <Dialog
+      open={isTipDialogOpened}
+      onClose={() => setIsTipDialogOpened(false)}
+    >
+      <div style={{ padding: "20px" }}>
+        <DialogTitle>Add tip percent:</DialogTitle>
+        <TextField
+          id="standard-select-currency"
+          label="Tip percent"
+          onChange={(e) => setTip(Number(e.target.value))}
+          variant="standard"
+          inputRef={newOrderedProductIdRef}
+          defaultValue={billData?.tip}
+        />
+        <Fab
+          color="primary"
+          aria-label="save"
+          onClick={handleTipChange}
+          sx={{ marginLeft: "10px" }}
+        >
+          <SaveIcon />
+        </Fab>
+      </div>
+    </Dialog>
+  );
+
   const editOrderedProductStatus = (
     <Dialog
       open={isEditDialogOpened}
@@ -237,6 +310,7 @@ export const OrderList = () => {
           helperText="Please select new status"
           variant="standard"
           inputRef={newOrderedProductIdRef}
+          defaultValue={""}
         >
           {productStatuses.map((option, index) => (
             <MenuItem key={index} value={option.id}>
@@ -258,7 +332,28 @@ export const OrderList = () => {
   return (
     <>
       <Box>
-        <h2>Table: {!loading ? data.pointOfSale.name : ""}</h2>
+        <Box
+          css={css`
+            border-bottom: 1px solid;
+            padding: 30px 0 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+          `}
+        >
+          <Typography
+            variant="h4"
+            css={css`
+              font-weight: 600;
+            `}
+          >
+            Table: {data && data.pointOfSale.name}
+          </Typography>
+          <Typography>
+            Waiter: <strong>{waiterName}</strong>
+          </Typography>
+        </Box>
+
         <Table sx={{ minWidth: 700 }} aria-label="spanning table">
           <TableHead>
             <TableRow>
@@ -327,9 +422,6 @@ export const OrderList = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                    {/* <IconButton aria-label="delete" size="large">
-                    <EditIcon />
-                  </IconButton> */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -339,20 +431,30 @@ export const OrderList = () => {
                   <TableCell rowSpan={3} />
                   <TableCell colSpan={2}>Subtotal</TableCell>
                   <TableCell align="right">
-                    {billData.sum === 0 ? 0 : ccyFormat(billData.sum)}
+                    {!billData.sum || billData.sum === 0
+                      ? 0
+                      : ccyFormat(billData.sum)}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Tip</TableCell>
-                  <TableCell align="right">{`${(TAX_RATE * 100).toFixed(
-                    0
-                  )} %`}</TableCell>
-                  <TableCell align="right">{ccyFormat(billData.tip)}</TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => setIsTipDialogOpened(true)}>
+                      {tip}%
+                    </Button>
+                  </TableCell>
+                  <TableCell align="right">
+                    {billData.tip &&
+                      billData.sum &&
+                      ccyFormat((billData.sum / 100) * billData.tip)}
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={2}>Total</TableCell>
                   <TableCell align="right">
-                    {billData.total === 0 ? 0 : ccyFormat(billData.total)}
+                    {!billData.total || billData.total === 0
+                      ? 0
+                      : ccyFormat(billData.total)}
                   </TableCell>
                 </TableRow>
               </>
@@ -377,6 +479,7 @@ export const OrderList = () => {
                   helperText="Please select product"
                   variant="standard"
                   inputRef={newProductIdRef}
+                  defaultValue={""}
                 >
                   {productsList &&
                     productsList.map((option, index) => (
@@ -414,7 +517,24 @@ export const OrderList = () => {
         </Table>
       </Box>
       {editOrderedProductStatus}
+      {editTips}
       {isLoading && <Loading />}
+      <Button
+        variant="contained"
+        css={css`
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+        `}
+        onClick={generateQR}
+      >
+        <QrCode2Icon
+          css={css`
+            margin-right: 10px;
+          `}
+        />
+        <span>Print table qr code</span>
+      </Button>
     </>
   );
 };

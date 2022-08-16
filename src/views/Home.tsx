@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Box, Button, Toolbar, Typography } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { Box, Toolbar, Typography } from "@mui/material";
 import { Login } from "./Login";
 import { useState } from "react";
 import { Singup } from "./Singup";

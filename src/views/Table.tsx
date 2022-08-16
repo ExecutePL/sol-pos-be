@@ -52,7 +52,7 @@ export const Table = ({
               white-space: break-spaces;
               text-align: center;
               display: flex;
-              aling-items: center;
+              align-items: center;
               justify-content: center;
               gap: 10px;
             `}
@@ -66,49 +66,28 @@ export const Table = ({
               {tableName}
             </span>
           </Typography>
-          <Typography>
-            <Box
-              css={css`
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 5px;
-                padding: 5px 0;
-              `}
-            >
-              {tableStatus === 1 ? (
-                <>
-                  <span
-                    css={css`
-                      color: green;
-                    `}
-                  >
-                    FREE
-                  </span>
-                  <CheckIcon
-                    css={css`
-                      color: green;
-                    `}
-                  />
-                </>
-              ) : (
-                <>
-                  <span
-                    css={css`
-                      color: red;
-                    `}
-                  >
-                    BUSY
-                  </span>
-                  <CloseIcon
-                    css={css`
-                      color: red;
-                    `}
-                  />
-                </>
-              )}
-            </Box>
-          </Typography>
+          <Box
+            sx={{ color: "primary.light" }}
+            css={css`
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 5px;
+              padding: 5px 0;
+            `}
+          >
+            {tableStatus === 1 ? (
+              <>
+                <span>FREE</span>
+                <CheckIcon />
+              </>
+            ) : (
+              <>
+                <span>BUSY</span>
+                <CloseIcon />
+              </>
+            )}
+          </Box>
         </Link>
         <div
           css={css`

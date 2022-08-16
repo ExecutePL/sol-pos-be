@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct(
@@ -6,7 +6,6 @@ export const CREATE_PRODUCT = gql`
     $description: String
     $active: Boolean
     $price: String
-    $userId: ID
   ) {
     createProduct(
       input: {
@@ -14,7 +13,6 @@ export const CREATE_PRODUCT = gql`
         description: $description
         active: $active
         price: $price
-        user: { connect: $userId }
       }
     ) {
       user {
