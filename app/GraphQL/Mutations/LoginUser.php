@@ -16,7 +16,7 @@ final class LoginUser
      * @return User
      * @throws Error
      */
-    public function __invoke($_, array $args): User
+    public function __invoke($_, array $args): String
     {
         $user = User::where('email', $args['email'])->first();
 
