@@ -22,6 +22,8 @@ final class CheckOrCreateBill
             $args['worker_id'] = $worker->id;
             $bill = new Bill($args);
             $bill->save();
+            $pos->status = 2;
+            $pos->save();
         }
         return $bill;
     }
