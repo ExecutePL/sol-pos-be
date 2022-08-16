@@ -5,7 +5,7 @@
     "logo": "https://cryptologos.cc/logos/solana-sol-logo.png?v=023",
     "keywords": ["solana", "graphql", "nodejs"],
     "scripts": {
-        "postdeploy": "php artisan migrate:fresh --seed"
+        "postdeploy": "php artisan migrate:fresh --seed --force"
     },
     "env": {
         "APP_KEY": {
