@@ -16,7 +16,7 @@ final class CheckOrCreateBill
     public function __invoke($_, array $args)
     {
         $guard = Auth::guard();
-        $bill = Bill::where('pos_id',$args['pos_id'])->where('status',1)->first();
+        $bill = Bill::where('pos_id',$args['pos_id'])->where('status',1)->orWhere('status',null)->first();
         $pos = PointOfSale::where('id',$args['pos_id'])->first();
         $pos->status = 2;
         $pos->save();
