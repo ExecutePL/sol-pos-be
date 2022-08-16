@@ -24,6 +24,7 @@ final class CheckOrCreateBill
             $args['user_id'] = $guard->id();
             $worker = Worker::where('user_id',$pos->user_id)->first();
             $args['worker_id'] = $worker->id;
+            $args['pos_id'] = $pos->id;
             $bill = new Bill($args);
             $bill->save();
         }
