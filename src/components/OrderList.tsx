@@ -193,7 +193,12 @@ export const OrderList = () => {
             refetchQueries: [POINT_OF_SALE],
         }
     );
-    const { data: userData } = useQuery(USER);
+    const [userWallet, setUserWallet] = useState<string>("");
+    useQuery(USER, {
+        onCompleted: (data) => {
+            setUserWallet(data.me["wallet_address"]);
+        },
+    });
 
     useEffect(() => {
         checkOrCreateBill({
@@ -563,11 +568,22 @@ export const OrderList = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <a
-                    href={`solana:${userData.me["wallet_address"]}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                <Button
+                    variant="contained"
+                    css={css`
+                        margin-top: 20px;
+                    `}
                 >
-                    Pay poor man
-                </a>
+                    <a
+                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                        css={css`
+                            text-decoration: none;
+                            color: inherit;
+                        `}
+                    >
+                        Pay
+                    </a>
+                </Button>
             </Box>
             {editOrderedProductStatus}
             {editTips}
