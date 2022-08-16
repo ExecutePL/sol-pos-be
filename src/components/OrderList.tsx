@@ -231,9 +231,15 @@ export const OrderList = () => {
     const handleSubmit = () => {
         if (billData) {
             for (let i = 0; i < newProductQty; i++) {
-                createOrderedProduct({
-                    variables: { billId: billData.id, productId: newProductId },
-                });
+                const timer = setTimeout(() => {
+                    createOrderedProduct({
+                        variables: {
+                            billId: billData.id,
+                            productId: newProductId,
+                        },
+                    });
+                }, 200);
+                clearTimeout(timer);
             }
         }
         newProductIdRef.current!.value = "";

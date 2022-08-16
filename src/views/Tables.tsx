@@ -22,6 +22,7 @@ import { Loading } from "../components/Loading";
 import { USER } from "../api/gql/queries/user";
 import { useNavigate, useParams } from "react-router-dom";
 import { LOGIN_USER_BY_WORKER } from "../api/gql/mutations/user/loginUserByWorker";
+import { Keypair } from "@solana/web3.js";
 
 type PointOfSale = {
     id: number;
@@ -118,15 +119,20 @@ export const Tables = () => {
     ]);
 
     const handleNewTable = () => {
+        const reference = Keypair.generate().publicKey;
+        const encodeReference = reference.toBase58();
         if (newTableName) {
-            createTable({ variables: { name: newTableName } }).then(
-                (result) => {
-                    if (result) {
-                        setIsDialogOpened(false);
-                        setNewTableName(undefined);
-                    }
+            createTable({
+                variables: {
+                    name: newTableName,
+                    publicKey: encodeReference,
+                },
+            }).then((result) => {
+                if (result) {
+                    setIsDialogOpened(false);
+                    setNewTableName(undefined);
                 }
-            );
+            });
         }
     };
     const handleNewTableName = (event: React.ChangeEvent<HTMLInputElement>) => {
