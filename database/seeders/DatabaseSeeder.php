@@ -53,24 +53,6 @@ class DatabaseSeeder extends Seeder
                 'user_id' => 1,
             ]
         );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 1',
-                'user_id' => 1,
-            ]
-        );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 2',
-                'user_id' => 1,
-            ]
-        );
-        \App\Models\PointOfSale::create(
-            [
-                'name' => 'Table 3',
-                'user_id' => 1,
-            ]
-        );
         \App\Models\Worker::create(
             [
                 'name' => 'Kristine',
