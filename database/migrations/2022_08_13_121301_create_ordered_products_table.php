@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('ordered_products', function (Blueprint $table) {
             $table->id();
             $table->integer('status')->default(1);
-            $table->foreignId('bill_id')->constrained('bills');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('bill_id')->constrained('bills')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('worker_id')->constrained('workers');
-            $table->foreignId('pos_id')->constrained('points_of_sale');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('worker_id')->constrained('workers')->onDelete('cascade');
+            $table->foreignId('pos_id')->constrained('points_of_sale')->onDelete('cascade');
             $table->integer('status')->default(1);
             $table->double('sum')->default(0.00);
             $table->integer('tip')->default(0);
