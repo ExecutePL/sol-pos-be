@@ -14,23 +14,18 @@ final class LoginUser
      * @param null $_
      * @param array{} $args
      * @return User
-     * @throws Error
+     * @throws ValidationException
      */
     public function __invoke($_, array $args): User
     {
-        $guard = Auth::guard(config('sanctum.guard'));
+        $user = User::where('email', $args['email'])->first();
 
-        if( ! $guard->attempt($args)) {
-            throw new Error('Invalid credentials.');
+        if (! $user || ! Hash::check($args['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                                                        'email' => ['The provided credentials are incorrect.'],
+                                                    ]);
         }
 
-        /**
-         * Since we successfully logged in, this can no longer be `null`.
-         *
-         * @var \App\Models\User $user
-         */
-        $user = $guard->user();
-
-        return $user;
+        return $user->createToken($args['email'])->plainTextToken;
     }
 }
