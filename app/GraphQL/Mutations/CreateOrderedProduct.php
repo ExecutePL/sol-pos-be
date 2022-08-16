@@ -20,6 +20,7 @@ final class CreateOrderedProduct
         $bill = Bill::where('id',$args['bill']['connect'])->first();
         $product = Product::where('id',$args['product']['connect'])->first();
         $bill->sum += $product->price;
+        $bill->total += $product->price;
         $bill->save();
         $new_ordered_product->save();
         return $new_ordered_product;

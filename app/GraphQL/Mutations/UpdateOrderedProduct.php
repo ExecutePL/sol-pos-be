@@ -21,6 +21,7 @@ final class UpdateOrderedProduct
                 $bill = Bill::where('id',$ordered_product->bill_id)->first();
                 $product = Product::where('id',$ordered_product->product_id)->first();
                 $bill->sum -= $product->price;
+                $bill->total -= $product->price;
                 $bill->save();
 
             }
