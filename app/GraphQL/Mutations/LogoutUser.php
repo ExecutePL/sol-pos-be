@@ -12,7 +12,7 @@ final class LogoutUser
      */
     public function __invoke($_, array $args)
     {
-        $guard = Auth::guard(config('sanctum.guard', 'web'));
+        $guard = Auth::guard(config('sanctum.guard'));
 
         /** @var \App\Models\User|null $user */
         $user = $guard->user();
