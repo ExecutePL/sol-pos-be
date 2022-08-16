@@ -18,6 +18,10 @@ final class UpdateBill
             if($key == "id") continue;
             $bill->$key = $value;
         }
+        $bill->total = $bill->sum;
+        if($bill->tip != 0){
+            $bill->total = $bill->total * (1+($bill->tip/100));
+        }
         $bill->save();
         if($bill->status == 2){
             $pos = PointOfSale::where('id',$bill->pos_id)->first();
