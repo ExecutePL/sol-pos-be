@@ -162,32 +162,31 @@ export const Tables = () => {
         setIsEditDialogOpened(true);
     };
     const addNewTableDialog = (
-        <Dialog
-            open={isDialogOpened}
-            onClose={() => setIsDialogOpened(false)}
-            sx={{ pt: 0 }}
-        >
-            <div style={{ padding: "20px" }}>
+        <Dialog open={isDialogOpened} onClose={() => setIsDialogOpened(false)}>
+            <div
+                style={{
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "20px",
+                }}
+            >
                 <DialogTitle>Add new table:</DialogTitle>
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <TextField
-                            id="outlined-basic"
-                            label="Table name"
-                            variant="outlined"
-                            onChange={handleNewTableName}
-                        />
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            onClick={handleNewTable}
-                        >
-                            Add
-                        </Button>
-                    </Grid>
-                </Grid>
+
+                <TextField
+                    id="outlined-basic"
+                    label="Table name"
+                    variant="outlined"
+                    onChange={handleNewTableName}
+                />
+                <Button
+                    variant="contained"
+                    size="large"
+                    onClick={handleNewTable}
+                >
+                    Add
+                </Button>
             </div>
         </Dialog>
     );
@@ -197,7 +196,15 @@ export const Tables = () => {
             open={isEditDialogOpened}
             onClose={() => setIsEditDialogOpened(false)}
         >
-            <div style={{ padding: "20px" }}>
+            <div
+                style={{
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "20px",
+                }}
+            >
                 <DialogTitle>Edit table name:</DialogTitle>
                 <TextField
                     id="outlined-basic"
@@ -206,14 +213,13 @@ export const Tables = () => {
                     onChange={handleNewTableName}
                     defaultValue={selectedTable?.name}
                 />
-                <Fab
-                    color="primary"
-                    aria-label="save"
+                <Button
+                    variant="contained"
+                    size="large"
                     onClick={handleTableNameEdit}
-                    sx={{ marginLeft: "10px" }}
                 >
-                    <SaveIcon />
-                </Fab>
+                    Save
+                </Button>
             </div>
         </Dialog>
     );
