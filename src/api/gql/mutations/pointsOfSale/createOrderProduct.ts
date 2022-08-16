@@ -1,11 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_ORDERED_PRODUCT = gql`
-  mutation CreateOrderedProduct($billId: ID, $productId: ID) {
-    createOrderedProduct(
-      input: { bill: { connect: $billId }, product: { connect: $productId } }
+    mutation CreateOrderedProduct(
+        $billId: ID
+        $productId: ID
+        $quantity: Int!
     ) {
-      id
+        createOrderedProduct(
+            quantity: $quantity
+            input: {
+                bill: { connect: $billId }
+                product: { connect: $productId }
+            }
+        )
     }
-  }
 `;
