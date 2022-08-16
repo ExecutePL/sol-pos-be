@@ -4,7 +4,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createPointOfSale(input: CreatePointOfSaleInput! @spread): PointOfSale! @create
+    createPointOfSale(input: CreatePointOfSaleInput! @spread): PointOfSale! @guard
     updatePointOfSale(id: ID!, input: UpdatePointOfSaleInput! @spread): PointOfSale! @update
     deletePointOfSale(id: ID!): PointOfSale! @delete
 }

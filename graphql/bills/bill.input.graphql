@@ -4,7 +4,6 @@ extend input CreateBillInput {
     tip: Int
     total: Float
     products: HasManyProducts
-    user: BelongsToUser!
     worker: BelongsToWorker!
     pointOfSale: BelongsToPointOfSale!
 }

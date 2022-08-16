@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => 'TestHash',
+                'wallet_address' => Str::random(18),
                 'remember_token' => Str::random(60),
             ]
         );

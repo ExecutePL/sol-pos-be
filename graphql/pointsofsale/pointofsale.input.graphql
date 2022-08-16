@@ -1,7 +1,6 @@
 extend input CreatePointOfSaleInput {
     name: String!
     status: Int
-    user: BelongsToUser!
     bills: HasManyBills
 }
 

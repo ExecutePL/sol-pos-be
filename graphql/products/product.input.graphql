@@ -5,7 +5,6 @@ extend input CreateProductInput {
     featured: Boolean
     price: String
     sort_order: Int
-    user: BelongsToUser!
 }
 
 extend input UpdateProductInput {
