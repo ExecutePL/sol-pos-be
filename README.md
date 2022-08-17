@@ -74,8 +74,9 @@ ReactJS, GraphQL, PHP, C++, Solana Pay
 ###Screenshots
 
 <details>
-  <summary>Show me</summary>
+  <summary>Screenshots</summary>
   
-  ## Images
+  ![App Tables]([https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png](https://user-images.githubusercontent.com/94838246/185071204-8d68041a-ef4d-4eb5-a933-83f6c2cf8d7f.png))
+      ![App Tables]([[https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png](https://user-images.githubusercontent.com/94838246/185071204-8d68041a-ef4d-4eb5-a933-83f6c2cf8d7f.png](https://user-images.githubusercontent.com/94838246/185071185-be490b77-888c-4281-9dd1-1c6f60053412.png)))
 
 </details>
