@@ -71,12 +71,16 @@ ReactJS, GraphQL, PHP, C++, Solana Pay
 [Instagram](https://www.instagram.com/real_solpos/)
 
 
-###Screenshots
+## Screenshots
 
 <details>
-  <summary>Screenshots</summary>
+  <summary>Click here</summary>
   
-  ![App Tables]([https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png](https://user-images.githubusercontent.com/94838246/185071204-8d68041a-ef4d-4eb5-a933-83f6c2cf8d7f.png))
-      ![App Tables]([[https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png](https://user-images.githubusercontent.com/94838246/185071204-8d68041a-ef4d-4eb5-a933-83f6c2cf8d7f.png](https://user-images.githubusercontent.com/94838246/185071185-be490b77-888c-4281-9dd1-1c6f60053412.png)))
+![Tables](https://user-images.githubusercontent.com/94838246/185071204-8d68041a-ef4d-4eb5-a933-83f6c2cf8d7f.png)
+![Tables_1](https://user-images.githubusercontent.com/94838246/185071185-be490b77-888c-4281-9dd1-1c6f60053412.png)
+![Products](https://user-images.githubusercontent.com/94838246/185071202-e1fb9ee9-c9cf-4829-86b5-385d77f21356.png)
+![Waiters](https://user-images.githubusercontent.com/94838246/185071197-b2155120-1461-4dec-a190-2583c939a20a.png)
+![Waiters_1](https://user-images.githubusercontent.com/94838246/185071200-55bc0408-9ef5-4ea6-a9d0-57af857c66f6.png)
+![Transactions](https://user-images.githubusercontent.com/94838246/185071194-b33c3576-2ff1-4940-a893-5b468eb32ea6.png)
 
 </details>
