@@ -673,10 +673,10 @@ export const OrderList = () => {
                 `}
                 onClick={!isClient ? generateQR : () => 0}
             >
-                {isClient && url ? (
+                {isClient  ? (
                     <a
                         // solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
-                        href={`${url.href}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
+                        href={`${url?.href}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
                         css={css`
                             text-decoration: none;
                             color: inherit;
