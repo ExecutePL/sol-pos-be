@@ -1,10 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
 import Check from "@mui/icons-material/Check";
@@ -367,7 +364,8 @@ export const OrderList = () => {
                         padding: 30px 15px 10px;
                         display: flex;
                         justify-content: space-between;
-                        align-items: flex-end;
+                        align-items: flex-start;
+                        flex-direction: column;
                     `}
                 >
                     <Typography
@@ -383,32 +381,34 @@ export const OrderList = () => {
                     </Typography>
                 </Box>
 
-                <Table sx={{ minWidth: 700 }} aria-label="spanning table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Product</TableCell>
-                            <TableCell align="right">Qty.</TableCell>
-                            <TableCell align="right">Unit</TableCell>
-                            <TableCell align="right">Sum</TableCell>
-                            <TableCell align="center">Status</TableCell>
-                            <TableCell align="right"></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
+                <Table
+                    sx={{ minWidth: 700 }}
+                    aria-label="spanning table"
+                    css={css`
+                        margin-left: 15px;
+                    `}
+                >
+                    <Thead>
+                        <Tr>
+                            <Th align="left">Product</Th>
+                            <Th align="right">Qty.</Th>
+                            <Th align="right">Unit</Th>
+                            <Th align="right">Sum</Th>
+                            <Th align="center">Status</Th>
+                            <Th align="left">Action</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
                         {orderList &&
                             orderList.map((row, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell align="right">
-                                        x{row.qty}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        {row.unit}
-                                    </TableCell>
-                                    <TableCell align="right">
+                                <Tr key={index}>
+                                    <Td>{row.name}</Td>
+                                    <Td align="right">x{row.qty}</Td>
+                                    <Td align="right">{row.unit}</Td>
+                                    <Td align="right">
                                         {ccyFormat(row.price)}
-                                    </TableCell>
-                                    <TableCell align="center">
+                                    </Td>
+                                    <Td align="center">
                                         {row.status === 4 && (
                                             <Chip
                                                 color="success"
@@ -474,36 +474,38 @@ export const OrderList = () => {
                                                 }}
                                             />
                                         )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {row.status === 1 && (
-                                            <IconButton
-                                                aria-label="delete"
-                                                size="large"
-                                                onClick={() =>
-                                                    handleRemove(row.o_id)
-                                                }
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
+                                    </Td>
+                                    <Td>
+                                        <Tr>
+                                            {row.status === 1 && (
+                                                <IconButton
+                                                    aria-label="delete"
+                                                    size="large"
+                                                    onClick={() =>
+                                                        handleRemove(row.o_id)
+                                                    }
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            )}
+                                        </Tr>
+                                    </Td>
+                                </Tr>
                             ))}
                         {orderList.length > 0 && billData && (
                             <>
-                                <TableRow>
-                                    <TableCell rowSpan={3} />
-                                    <TableCell colSpan={2}>Subtotal</TableCell>
-                                    <TableCell align="right">
+                                <Tr>
+                                    <Td rowSpan={3} />
+                                    <Td colSpan={2}>Subtotal</Td>
+                                    <Td align="right">
                                         {!billData.sum || billData.sum === 0
                                             ? 0
                                             : ccyFormat(billData.sum)}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Tip</TableCell>
-                                    <TableCell align="right">
+                                    </Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Tip</Td>
+                                    <Td align="right">
                                         <Button
                                             onClick={() =>
                                                 setIsTipDialogOpened(true)
@@ -511,38 +513,38 @@ export const OrderList = () => {
                                         >
                                             {tip}%
                                         </Button>
-                                    </TableCell>
-                                    <TableCell align="right">
+                                    </Td>
+                                    <Td align="right">
                                         {billData.tip &&
                                             billData.sum &&
                                             ccyFormat(
                                                 (billData.sum / 100) *
                                                     billData.tip
                                             )}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell colSpan={2}>Total</TableCell>
-                                    <TableCell align="right">
+                                    </Td>
+                                </Tr>
+                                <Tr>
+                                    <Td colSpan={2}>Total</Td>
+                                    <Td align="right">
                                         {!billData.total || billData.total === 0
                                             ? 0
                                             : ccyFormat(billData.total)}
-                                    </TableCell>
-                                </TableRow>
+                                    </Td>
+                                </Tr>
                             </>
                         )}
-                    </TableBody>
+                    </Tbody>
                 </Table>
                 <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>
+                    <Thead>
+                        <Tr>
+                            <Td></Td>
+                            <Td></Td>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        <Tr>
+                            <Td>
                                 <TextField
                                     id="standard-select-currency"
                                     select
@@ -565,8 +567,8 @@ export const OrderList = () => {
                                             </MenuItem>
                                         ))}
                                 </TextField>
-                            </TableCell>
-                            <TableCell>
+                            </Td>
+                            <Td>
                                 <TextField
                                     id="standard-number"
                                     label="Qty"
@@ -581,8 +583,8 @@ export const OrderList = () => {
                                         );
                                     }}
                                 />
-                            </TableCell>
-                            <TableCell>
+                            </Td>
+                            <Td>
                                 <Button
                                     variant="contained"
                                     endIcon={<SendIcon />}
@@ -590,9 +592,9 @@ export const OrderList = () => {
                                 >
                                     Add new product
                                 </Button>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
+                            </Td>
+                        </Tr>
+                    </Tbody>
                 </Table>
             </Box>
             {editOrderedProductStatus}
