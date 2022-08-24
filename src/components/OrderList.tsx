@@ -26,8 +26,9 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import QRCode, { QRCodeToDataURLOptions } from "qrcode";
 import { UPDATE_BILL } from "../api/gql/mutations/bill/updateBill";
 import { USER } from "../api/gql/queries/user";
-import {PublicKey, Keypair, encodeURL } from '@solana/web3.js';
+import {PublicKey, Keypair } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
+import { encodeURL } from '@solana/pay';
 const TAX_RATE = 0.07;
 
 type BillData = {
@@ -201,6 +202,7 @@ export const OrderList = () => {
     const [userWallet, setUserWallet] = useState<string>("");
     useQuery(USER, {
         onCompleted: (data) => {
+            console.log(data)
             setUserWallet(data.me["wallet_address"]);
         },
     });
