@@ -357,7 +357,14 @@ export const OrderList = () => {
     );
     return (
         <>
-            <Box sx={{ width: "100%", marginBottom: "80px" }}>
+            <Box
+                sx={{ width: "100%", marginBottom: "80px" }}
+                css={css`
+                    .responsiveTable tbody tr {
+                        border: none !important;
+                    }
+                `}
+            >
                 <Box
                     css={css`
                         border-bottom: 1px solid;
