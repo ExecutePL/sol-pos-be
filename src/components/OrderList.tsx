@@ -618,7 +618,7 @@ export const OrderList = () => {
             >
                 {isClient ? (
                     <a
-                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
+                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
                         css={css`
                             text-decoration: none;
                             color: inherit;
