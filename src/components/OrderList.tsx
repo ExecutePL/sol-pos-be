@@ -26,7 +26,8 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import QRCode, { QRCodeToDataURLOptions } from "qrcode";
 import { UPDATE_BILL } from "../api/gql/mutations/bill/updateBill";
 import { USER } from "../api/gql/queries/user";
-
+import {PublicKey, Keypair, encodeURL } from '@solana/web3.js';
+import BigNumber from 'bignumber.js';
 const TAX_RATE = 0.07;
 
 type BillData = {
@@ -351,10 +352,17 @@ export const OrderList = () => {
                     sx={{ marginLeft: "10px" }}
                 >
                     <SaveIcon />
-                </Fab>
+                </Fab>00000000000000000000000
             </div>
         </Dialog>
     );
+
+    const recipient = new PublicKey(userWallet);
+    const paymentAmount = new BigNumber(billData && billData.total ? billData.total :0);
+    const reference = new Keypair().publicKey;
+
+    const url = encodeURL({ recipient, amount: paymentAmount, reference });
+
     return (
         <>
             <Box sx={{ width: "100%", marginBottom: "80px" }}>
@@ -618,7 +626,8 @@ export const OrderList = () => {
             >
                 {isClient ? (
                     <a
-                        href={`solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
+                        // solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
+                        href={`${url.href}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
                         css={css`
                             text-decoration: none;
                             color: inherit;
