@@ -212,8 +212,7 @@ export const OrderList = () => {
         checkOrCreateBill({
             variables: { posId: tableId, userId: 1, workerId: 1 },
         });
-        const isClient =
-            !localStorage.getItem("login") && !localStorage.getItem("isWaiter");
+        const isClient = !localStorage.getItem("login");
         setIsClient(isClient);
     }, []);
 
@@ -600,20 +599,31 @@ export const OrderList = () => {
             {editTips}
             {isLoading && <Loading />}
             <Button
+                sx={{
+                    bottom: isClient ? "0px" : "20px",
+                    right: isClient ? "0px" : "20px",
+                }}
                 variant="contained"
                 css={css`
                     position: fixed;
-                    bottom: 20px;
-                    right: 20px;
+                    @media (min-width: 600px) {
+                        min-width: auto;
+                        bottom: 20px;
+                        right: 20px;
+                    }
                 `}
                 onClick={!isClient ? generateQR : () => 0}
             >
-                {!isClient ? (
+                {isClient ? (
                     <a
                         href={`solana:${userWallet}?amount=${billData?.total}&spl-token=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`}
                         css={css`
                             text-decoration: none;
                             color: inherit;
+                            min-width: 100vw;
+                            @media (min-width: 600px) {
+                                min-width: auto;
+                            }
                         `}
                     >
                         Pay
