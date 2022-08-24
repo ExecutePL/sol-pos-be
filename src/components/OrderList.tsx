@@ -358,12 +358,18 @@ export const OrderList = () => {
             </div>
         </Dialog>
     );
+    const [url, setUrl] = useState<any>('');
+    useEffect(() => {
+        if(userWallet){
+        const recipient = new PublicKey(userWallet);
+        const paymentAmount = new BigNumber(billData && billData.total ? billData.total :0);
+        const reference = new Keypair().publicKey;
 
-    const recipient = new PublicKey(userWallet);
-    const paymentAmount = new BigNumber(billData && billData.total ? billData.total :0);
-    const reference = new Keypair().publicKey;
+        const url = encodeURL({ recipient, amount: paymentAmount, reference });
+        setUrl(url);
+        }
+        },[])
 
-    const url = encodeURL({ recipient, amount: paymentAmount, reference });
 
     return (
         <>
@@ -667,7 +673,7 @@ export const OrderList = () => {
                 `}
                 onClick={!isClient ? generateQR : () => 0}
             >
-                {isClient ? (
+                {isClient && url ? (
                     <a
                         // solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
                         href={`${url.href}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
