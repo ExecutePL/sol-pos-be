@@ -492,21 +492,48 @@ export const OrderList = () => {
                                     </Td>
                                 </Tr>
                             ))}
+                    </Tbody>
+                </Table>
+                <Table
+                    css={css`
+                        margin-left: 15px;
+                    `}
+                >
+                    <Thead>
+                        <Tr>
+                            <Td></Td>
+                            <Td></Td>
+                            <Td></Td>
+                            <Td></Td>
+                            <Td></Td>
+                            <Td></Td>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
                         {orderList.length > 0 && billData && (
                             <>
                                 <Tr>
-                                    <Td rowSpan={3} />
+                                    <Td></Td>
+                                </Tr>
+                                <Tr>
                                     <Td colSpan={2}>Subtotal</Td>
-                                    <Td align="right">
+                                    <Td align="left">
                                         {!billData.sum || billData.sum === 0
                                             ? 0
                                             : ccyFormat(billData.sum)}
                                     </Td>
                                 </Tr>
                                 <Tr>
-                                    <Td>Tip</Td>
-                                    <Td align="right">
+                                    <Td colSpan={2} align="left">
+                                        Tip
+                                    </Td>
+                                    <Td align="left">
                                         <Button
+                                            css={css`
+                                                min-width: 0 !important;
+                                                padding: 0 !important;
+                                                margin: 0 !important;
+                                            `}
                                             onClick={() =>
                                                 setIsTipDialogOpened(true)
                                             }
@@ -514,7 +541,7 @@ export const OrderList = () => {
                                             {tip}%
                                         </Button>
                                     </Td>
-                                    <Td align="right">
+                                    <Td align="left">
                                         {billData.tip &&
                                             billData.sum &&
                                             ccyFormat(
@@ -525,7 +552,7 @@ export const OrderList = () => {
                                 </Tr>
                                 <Tr>
                                     <Td colSpan={2}>Total</Td>
-                                    <Td align="right">
+                                    <Td align="left">
                                         {!billData.total || billData.total === 0
                                             ? 0
                                             : ccyFormat(billData.total)}
@@ -535,7 +562,11 @@ export const OrderList = () => {
                         )}
                     </Tbody>
                 </Table>
-                <Table>
+                <Table
+                    css={css`
+                        margin-left: 15px;
+                    `}
+                >
                     <Thead>
                         <Tr>
                             <Td></Td>
@@ -544,7 +575,7 @@ export const OrderList = () => {
                     </Thead>
                     <Tbody>
                         <Tr>
-                            <Td>
+                            <Td colSpan={2}>
                                 <TextField
                                     id="standard-select-currency"
                                     select
@@ -568,7 +599,7 @@ export const OrderList = () => {
                                         ))}
                                 </TextField>
                             </Td>
-                            <Td>
+                            <Td colSpan={2}>
                                 <TextField
                                     id="standard-number"
                                     label="Qty"
@@ -584,8 +615,11 @@ export const OrderList = () => {
                                     }}
                                 />
                             </Td>
-                            <Td>
+                            <Td colSpan={2}>
                                 <Button
+                                    css={css`
+                                        margin-top: 15px;
+                                    `}
                                     variant="contained"
                                     endIcon={<SendIcon />}
                                     onClick={handleSubmit}
