@@ -121,11 +121,13 @@ export const Layout = ({ children }: LayoutProps) => {
                         mobileOpen={mobileOpen}
                         drawerWidth={DRAWER_WIDTH}
                         onDrawerToggle={handleDrawerToggle}
+                        isUserLogin={isUserLogin}
                     />
                     <Header
                         onDrawerToggle={handleDrawerToggle}
                         activeTab={activeTab}
                         drawerWidth={DRAWER_WIDTH}
+                        isUserLogin={isUserLogin}
                     />
                     <RouteContent>{children}</RouteContent>
                 </Box>

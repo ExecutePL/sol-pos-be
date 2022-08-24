@@ -30,6 +30,7 @@ interface SidebarProps {
     mobileOpen: boolean;
     drawerWidth: number;
     onDrawerToggle: () => void;
+    isUserLogin: boolean;
 }
 
 export const Sidebar = ({
@@ -37,9 +38,11 @@ export const Sidebar = ({
     mobileOpen,
     drawerWidth,
     onDrawerToggle,
+    isUserLogin,
 }: SidebarProps) => {
     const location = useLocation();
     const [isWaiterLogin, setIsWaiterLogin] = useState<boolean>(false);
+
     useEffect(() => {
         const isWaiterLogin = Boolean(localStorage.getItem("isWaiter"));
         setIsWaiterLogin(isWaiterLogin);
@@ -61,50 +64,54 @@ export const Sidebar = ({
                 </Link>
             </Toolbar>
             <Divider />
-            <List>
-                {tabs.map((tab) => {
-                    const isTableActive =
-                        tab.path === "/tables" &&
-                        (location.pathname === "/" ||
-                            location.pathname.includes("order"));
-                    const isActive =
-                        location.pathname.includes(tab.path) || isTableActive;
-                    const notShowTab = isWaiterLogin && tab.user === "admin";
-                    if (notShowTab) return null;
-                    return (
-                        <Link
-                            css={css`
-                                text-decoration: none;
-                            `}
-                            to={tab.path}
-                            key={tab.name}
-                        >
-                            <ListItem
-                                disablePadding
-                                sx={{
-                                    color: isActive
-                                        ? "primary.main"
-                                        : "primary.light",
-                                    backgroundColor: isActive
-                                        ? "primary.dark"
-                                        : "transparent",
-                                }}
+            {isUserLogin && (
+                <List>
+                    {tabs.map((tab) => {
+                        const isTableActive =
+                            tab.path === "/tables" &&
+                            (location.pathname === "/" ||
+                                location.pathname.includes("order"));
+                        const isActive =
+                            location.pathname.includes(tab.path) ||
+                            isTableActive;
+                        const notShowTab =
+                            isWaiterLogin && tab.user === "admin";
+                        if (notShowTab) return null;
+                        return (
+                            <Link
+                                css={css`
+                                    text-decoration: none;
+                                `}
+                                to={tab.path}
+                                key={tab.name}
                             >
-                                <ListItemButton>
-                                    {tab.icon}
-                                    <ListItemText
-                                        css={css`
-                                            padding-left: 20px;
-                                        `}
-                                        disableTypography
-                                        primary={tab.name}
-                                    />
-                                </ListItemButton>
-                            </ListItem>
-                        </Link>
-                    );
-                })}
-            </List>
+                                <ListItem
+                                    disablePadding
+                                    sx={{
+                                        color: isActive
+                                            ? "primary.main"
+                                            : "primary.light",
+                                        backgroundColor: isActive
+                                            ? "primary.dark"
+                                            : "transparent",
+                                    }}
+                                >
+                                    <ListItemButton>
+                                        {tab.icon}
+                                        <ListItemText
+                                            css={css`
+                                                padding-left: 20px;
+                                            `}
+                                            disableTypography
+                                            primary={tab.name}
+                                        />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+                        );
+                    })}
+                </List>
+            )}
         </div>
     );
 

@@ -107,6 +107,13 @@ export const OrderList = () => {
     });
     const [tip, setTip] = useState<number>(0);
     const [isTipDialogOpened, setIsTipDialogOpened] = useState<boolean>(false);
+
+    const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
+    useEffect(() => {
+        const login = localStorage.getItem("login");
+        setIsUserLogin(Boolean(login));
+    }, []);
+
     useEffect(() => {
         if (!data) return;
         if (!loading) {
@@ -411,10 +418,14 @@ export const OrderList = () => {
                                                     <Check fontSize="small" />
                                                 }
                                                 onClick={() => {
-                                                    setIsEditDialogOpened(true);
-                                                    setOrderedProductStatus(
-                                                        row.o_id
-                                                    );
+                                                    if (isUserLogin) {
+                                                        setIsEditDialogOpened(
+                                                            true
+                                                        );
+                                                        setOrderedProductStatus(
+                                                            row.o_id
+                                                        );
+                                                    }
                                                 }}
                                             />
                                         )}
@@ -435,10 +446,14 @@ export const OrderList = () => {
                                                     <Check fontSize="small" />
                                                 }
                                                 onClick={() => {
-                                                    setIsEditDialogOpened(true);
-                                                    setOrderedProductStatus(
-                                                        row.o_id
-                                                    );
+                                                    if (isUserLogin) {
+                                                        setIsEditDialogOpened(
+                                                            true
+                                                        );
+                                                        setOrderedProductStatus(
+                                                            row.o_id
+                                                        );
+                                                    }
                                                 }}
                                             />
                                         )}
@@ -449,24 +464,30 @@ export const OrderList = () => {
                                                     <Check fontSize="small" />
                                                 }
                                                 onClick={() => {
-                                                    setIsEditDialogOpened(true);
-                                                    setOrderedProductStatus(
-                                                        row.o_id
-                                                    );
+                                                    if (isUserLogin) {
+                                                        setIsEditDialogOpened(
+                                                            true
+                                                        );
+                                                        setOrderedProductStatus(
+                                                            row.o_id
+                                                        );
+                                                    }
                                                 }}
                                             />
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        <IconButton
-                                            aria-label="delete"
-                                            size="large"
-                                            onClick={() =>
-                                                handleRemove(row.o_id)
-                                            }
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                        {row.status === 1 && (
+                                            <IconButton
+                                                aria-label="delete"
+                                                size="large"
+                                                onClick={() =>
+                                                    handleRemove(row.o_id)
+                                                }
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}
