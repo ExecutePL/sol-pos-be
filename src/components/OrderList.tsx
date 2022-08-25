@@ -115,6 +115,7 @@ export const OrderList = () => {
     });
     const [tip, setTip] = useState<number>(0);
     const [isTipDialogOpened, setIsTipDialogOpened] = useState<boolean>(false);
+    const [userWallet, setUserWallet] = useState<string>("");
 
     const [isUserLogin, setIsUserLogin] = useState<boolean>(false);
     useEffect(() => {
@@ -150,6 +151,7 @@ export const OrderList = () => {
                             )
                     );
                 setOrderList(orderedProducts);
+
                 if (data.pointOfSale.bills[0]) {
                     const sum = data.pointOfSale.bills[0].sum;
                     const total = data.pointOfSale.bills[0].total;
@@ -167,6 +169,8 @@ export const OrderList = () => {
             } else {
                 console.log("No products");
             }
+            const walletAdress = data?.pointOfSale?.user?.walletAddress;
+            setUserWallet(walletAdress);
             /* */
         }
     }, [data, loading]);
@@ -208,13 +212,6 @@ export const OrderList = () => {
             refetchQueries: [POINT_OF_SALE],
         }
     );
-    const [userWallet, setUserWallet] = useState<string>("");
-    useQuery(USER, {
-        onCompleted: (data) => {
-            console.log(data);
-            setUserWallet(data.me["wallet_address"]);
-        },
-    });
 
     const [isClient, setIsClient] = useState<boolean>(false);
     useEffect(() => {
@@ -368,29 +365,26 @@ export const OrderList = () => {
         </Dialog>
     );
     const [url, setUrl] = useState<any>("");
-    console.log(url);
     useEffect(() => {
-        // if (userWallet) {
-        const recipient = new PublicKey(
-            "CYwHwhicmQoDcEjBKjiFZrEKCqsBffPkLMj1Q8v7fMkU"
-        );
-        const paymentAmount = billData?.total
-            ? new BigNumber(billData?.total)
-            : new BigNumber(0);
-        const splToken = new PublicKey(
-            "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr"
-        );
-        const reference = new Keypair().publicKey;
-        const url = encodeURL({
-            recipient,
-            amount: paymentAmount,
-            splToken,
-            reference,
-        });
+        if (userWallet) {
+            const recipient = new PublicKey(userWallet);
+            const paymentAmount = billData?.total
+                ? new BigNumber(billData?.total)
+                : new BigNumber(0);
+            const splToken = new PublicKey(
+                "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr"
+            );
+            const reference = new Keypair().publicKey;
+            const url = encodeURL({
+                recipient,
+                amount: paymentAmount,
+                splToken,
+                reference,
+            });
 
-        setUrl(url);
-        // }
-    }, [billData]);
+            setUrl(url);
+        }
+    }, [billData, userWallet]);
 
     return (
         <>
