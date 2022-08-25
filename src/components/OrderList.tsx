@@ -15,7 +15,16 @@ import { POINT_OF_SALE } from "../api/gql/queries/pointOfSale/pointOfSale";
 import { useMutation, useQuery } from "@apollo/client";
 import { useHref, useLocation, useParams } from "react-router-dom";
 import { PRODUCTS } from "../api/gql/queries/products/products";
-import { Box, Dialog, DialogTitle, Fab, Typography } from "@mui/material";
+import {
+    Box,
+    Dialog,
+    DialogTitle,
+    Fab,
+    TableCell,
+    TableRow,
+    Typography,
+    Table as MuiTable,
+} from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { UPDATE_ORDERED_PRODUCTS } from "../api/gql/mutations/pointsOfSale/updateOrderedProduct";
 import { DELETE_ORDERED_PRODUCT } from "../api/gql/mutations/pointsOfSale/deleteOrderedProduct";
@@ -26,9 +35,9 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import QRCode, { QRCodeToDataURLOptions } from "qrcode";
 import { UPDATE_BILL } from "../api/gql/mutations/bill/updateBill";
 import { USER } from "../api/gql/queries/user";
-import {PublicKey, Keypair } from '@solana/web3.js';
-import BigNumber from 'bignumber.js';
-import { encodeURL } from '@solana/pay';
+import { PublicKey, Keypair } from "@solana/web3.js";
+import BigNumber from "bignumber.js";
+import { encodeURL } from "@solana/pay";
 const TAX_RATE = 0.07;
 
 type BillData = {
@@ -202,7 +211,7 @@ export const OrderList = () => {
     const [userWallet, setUserWallet] = useState<string>("");
     useQuery(USER, {
         onCompleted: (data) => {
-            console.log(data)
+            console.log(data);
             setUserWallet(data.me["wallet_address"]);
         },
     });
@@ -358,18 +367,30 @@ export const OrderList = () => {
             </div>
         </Dialog>
     );
-    const [url, setUrl] = useState<any>('');
+    const [url, setUrl] = useState<any>("");
+    console.log(url);
     useEffect(() => {
-        if(userWallet){
-        const recipient = new PublicKey(userWallet);
-        const paymentAmount = new BigNumber(billData && billData.total ? billData.total :0);
+        // if (userWallet) {
+        const recipient = new PublicKey(
+            "CYwHwhicmQoDcEjBKjiFZrEKCqsBffPkLMj1Q8v7fMkU"
+        );
+        const paymentAmount = billData?.total
+            ? new BigNumber(billData?.total)
+            : new BigNumber(0);
+        const splToken = new PublicKey(
+            "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr"
+        );
         const reference = new Keypair().publicKey;
+        const url = encodeURL({
+            recipient,
+            amount: paymentAmount,
+            splToken,
+            reference,
+        });
 
-        const url = encodeURL({ recipient, amount: paymentAmount, reference });
         setUrl(url);
-        }
-        },[])
-
+        // }
+    }, [billData]);
 
     return (
         <>
@@ -377,7 +398,7 @@ export const OrderList = () => {
                 sx={{ width: "100%", marginBottom: "80px" }}
                 css={css`
                     .responsiveTable tbody tr {
-                        border: none !important;
+                        // border: none !important;
                     }
                 `}
             >
@@ -413,25 +434,162 @@ export const OrderList = () => {
                 >
                     <Thead>
                         <Tr>
-                            <Th align="left">Product</Th>
-                            <Th align="right">Qty.</Th>
-                            <Th align="right">Unit</Th>
-                            <Th align="right">Sum</Th>
-                            <Th align="center">Status</Th>
-                            <Th align="left">Action</Th>
+                            <Th
+                                align="left"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Product
+                            </Th>
+                            <Th
+                                align="right"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Qty.
+                            </Th>
+                            <Th
+                                align="right"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Unit
+                            </Th>
+                            <Th
+                                align="right"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Sum
+                            </Th>
+                            <Th
+                                align="center"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Status
+                            </Th>
+                            <Th
+                                align="left"
+                                css={css`
+                                    border: none !important;
+                                    border-bottom: 2px solid
+                                        var(--mui-palette-TableCell-border) !important;
+                                    padding: 16px !important;
+                                `}
+                            >
+                                Action
+                            </Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {orderList &&
                             orderList.map((row, index) => (
-                                <Tr key={index}>
-                                    <Td>{row.name}</Td>
-                                    <Td align="right">x{row.qty}</Td>
-                                    <Td align="right">{row.unit}</Td>
-                                    <Td align="right">
+                                <Tr
+                                    key={index}
+                                    css={css`
+                                        @media (max-width: 600px) {
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                        }
+                                    `}
+                                >
+                                    <Td
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                            @media (min-width: 600px) {
+                                                padding: 16px !important;
+                                            }
+                                        `}
+                                    >
+                                        {row.name}
+                                    </Td>
+                                    <Td
+                                        align="right"
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                            @media (min-width: 600px) {
+                                                padding: 16px !important;
+                                            }
+                                        `}
+                                    >
+                                        x{row.qty}
+                                    </Td>
+                                    <Td
+                                        align="right"
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                            @media (min-width: 600px) {
+                                                padding: 16px !important;
+                                            }
+                                        `}
+                                    >
+                                        {row.unit}
+                                    </Td>
+                                    <Td
+                                        align="right"
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                            @media (min-width: 600px) {
+                                                padding: 16px !important;
+                                            }
+                                        `}
+                                    >
                                         {ccyFormat(row.price)}
                                     </Td>
-                                    <Td align="center">
+                                    <Td
+                                        align="center"
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+
+                                            @media (min-width: 600px) {
+                                                padding: 16px !important;
+                                            }
+                                        `}
+                                    >
                                         {row.status === 4 && (
                                             <Chip
                                                 color="success"
@@ -498,10 +656,28 @@ export const OrderList = () => {
                                             />
                                         )}
                                     </Td>
-                                    <Td>
-                                        <Tr>
+                                    <Td
+                                        css={css`
+                                            border: none !important;
+                                            border-bottom: 1px solid
+                                                var(
+                                                    --mui-palette-TableCell-border
+                                                ) !important;
+                                            ${row.status !== 1 &&
+                                            "padding-bottom: 20px;"}
+                                        `}
+                                        align="center"
+                                    >
+                                        <Tr
+                                            css={css`
+                                                border: none !important;
+                                            `}
+                                        >
                                             {row.status === 1 && (
                                                 <IconButton
+                                                    css={css`
+                                                        border: none;
+                                                    `}
                                                     aria-label="delete"
                                                     size="large"
                                                     onClick={() =>
@@ -517,40 +693,29 @@ export const OrderList = () => {
                             ))}
                     </Tbody>
                 </Table>
-                <Table
+                <MuiTable
                     css={css`
-                        margin-left: 15px;
+                        margin: 30px auto 0;
+                        max-width: 90%;
+                        @media (min-width: 600px) {
+                            max-width: 500px;
+                        }
                     `}
                 >
-                    <Thead>
-                        <Tr>
-                            <Td></Td>
-                            <Td></Td>
-                            <Td></Td>
-                            <Td></Td>
-                            <Td></Td>
-                            <Td></Td>
-                        </Tr>
-                    </Thead>
                     <Tbody>
                         {orderList.length > 0 && billData && (
                             <>
-                                <Tr>
-                                    <Td></Td>
-                                </Tr>
-                                <Tr>
-                                    <Td colSpan={2}>Subtotal</Td>
-                                    <Td align="left">
+                                <TableRow>
+                                    <TableCell>Subtotal</TableCell>
+                                    <TableCell align="right">
                                         {!billData.sum || billData.sum === 0
                                             ? 0
                                             : ccyFormat(billData.sum)}
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td colSpan={2} align="left">
-                                        Tip
-                                    </Td>
-                                    <Td align="left">
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Tip</TableCell>
+                                    <TableCell align="right">
                                         <Button
                                             css={css`
                                                 min-width: 0 !important;
@@ -563,28 +728,27 @@ export const OrderList = () => {
                                         >
                                             {tip}%
                                         </Button>
-                                    </Td>
-                                    <Td align="left">
+                                        {" = "}
                                         {billData.tip &&
                                             billData.sum &&
                                             ccyFormat(
                                                 (billData.sum / 100) *
                                                     billData.tip
                                             )}
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td colSpan={2}>Total</Td>
-                                    <Td align="left">
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Total</TableCell>
+                                    <TableCell align="right">
                                         {!billData.total || billData.total === 0
                                             ? 0
                                             : ccyFormat(billData.total)}
-                                    </Td>
-                                </Tr>
+                                    </TableCell>
+                                </TableRow>
                             </>
                         )}
                     </Tbody>
-                </Table>
+                </MuiTable>
                 <Table
                     css={css`
                         margin-left: 15px;
@@ -673,10 +837,9 @@ export const OrderList = () => {
                 `}
                 onClick={!isClient ? generateQR : () => 0}
             >
-                {isClient  ? (
+                {isClient ? (
                     <a
-                        // solana:${userWallet}?amount=${billData?.total}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
-                        href={`${url?.href}&spl-token=Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`}
+                        href={url?.href}
                         css={css`
                             text-decoration: none;
                             color: inherit;
